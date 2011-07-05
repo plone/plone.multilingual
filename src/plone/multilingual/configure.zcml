@@ -1,0 +1,10 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    i18n_domain="plone.app.multilingual"
+    >
+    <includeDependencies package="." />
+
+    <include file="profile.zcml" />
+
+</configure>
+

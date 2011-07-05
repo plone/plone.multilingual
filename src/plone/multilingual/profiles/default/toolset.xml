@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<tool-setup>
+    <required tool_id="canonical_storage"
+        class="plone.multilingual.storage.CanonicalStorage"/>
+</tool-setup>
+        

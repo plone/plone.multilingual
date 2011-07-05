@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<componentregistry>
+  <subscribers>
+    <subscriber
+      for="plone.multilingual.interfaces.ITranslatable
+           zope.lifecycleevent.interfaces.IObjectModifiedEvent"
+      handler="plone.multilingual.subscriber.update_on_modify"/>
+    <subscriber
+      for="plone.multilingual.interfaces.ITranslatable
+           OFS.interfaces.IObjectWillBeRemovedEvent"
+      handler="plone.multilingual.subscriber.remove_translation_on_delete"/>
+  </subscribers>
+  <adapters>
+    <adapter
+      for="plone.multilingual.interfaces.ITranslatable"
+      provides="plone.multilingual.interfaces.ITranslationManager"
+      factory="plone.multilingual.manager.TranslationManager"
+    />
+    <adapter
+      for="plone.multilingual.interfaces.ITranslatable"
+      provides="plone.multilingual.interfaces.ITranslationLocator"
+      factory="plone.multilingual.factory.DefaultTranslationLocator"
+    />
+    <adapter
+      for="plone.multilingual.interfaces.ITranslatable"
+      provides="plone.multilingual.interfaces.ITranslationIdChooser"
+      factory="plone.multilingual.factory.DefaultTranslationIdChooser"
+    />
+    <adapter
+      for="plone.multilingual.interfaces.ITranslatable"
+      provides="plone.multilingual.interfaces.ITranslationCloner"
+      factory="plone.multilingual.factory.DefaultTranslationCloner"
+    />
+    <adapter
+      for="plone.multilingual.interfaces.ITranslatable"
+      provides="plone.multilingual.interfaces.ITranslationFactory"
+      factory="plone.multilingual.factory.DefaultTranslationFactory"
+    />
+  </adapters>
+  <utilities>
+    <utility
+      interface="plone.multilingual.interfaces.ICanonicalStorage"
+      object="canonical_storage"/>
+  </utilities>
+</componentregistry>
+
