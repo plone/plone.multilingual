@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# vim: set ts=4 sw=4:
 import doctest
 from zope.event import notify
 from plone.app.testing import (

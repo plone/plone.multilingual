@@ -4,6 +4,6 @@
     i18n_domain="plone.app.multilingual"
     >
 
-  <adapter factory="._testing.DemoLanguage" />
+  <adapter factory="plone.multilingual.testing.DemoLanguage" />
 
 </configure>

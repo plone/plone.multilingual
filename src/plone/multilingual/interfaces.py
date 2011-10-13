@@ -128,9 +128,9 @@ class ITranslationManager(Interface):
 
     def query_canonical():
         """
-	query if there is an canonical for the context
-	used for migration
-	"""
+        query if there is an canonical for the context
+        used for migration
+	    """
 
 class ICanonicalStorage(Interface):
 

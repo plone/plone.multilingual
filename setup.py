@@ -16,7 +16,7 @@ setup(name='plone.multilingual',
       keywords='',
       author='Ramon Navarro Bosch',
       author_email='ramon@.nb@gmail.com',
-      url='http://svn.plone.org/svn/plone/plone.multilingual/',
+      url='http://github.com/bloodbare/plone.multilingual/',
       license='GPL',
       packages=find_packages('src'),
       package_dir={'': 'src'},
@@ -28,8 +28,8 @@ setup(name='plone.multilingual',
           'five.intid',
           'plone.app.intid'
       ],
-      extras_require = {
-          'test': [ 'plone.app.testing',],
+      extras_require={
+          'test': ['plone.app.testing', ],
       },
       entry_points="""
       # -*- Entry points: -*-
@@ -37,6 +37,4 @@ setup(name='plone.multilingual',
       [z3c.autoinclude.plugin]
       target = plone
       """,
-      setup_requires=["PasteScript"],
-      paster_plugins = ["ZopeSkel"],
       )
