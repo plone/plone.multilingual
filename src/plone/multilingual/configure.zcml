@@ -4,6 +4,8 @@
     
     <includeDependencies package="." />
 
+    <include package="plone.app.uuid" />
+
     <include file="profile.zcml" />
 
 </configure>

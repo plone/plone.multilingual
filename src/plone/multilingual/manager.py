@@ -3,10 +3,10 @@ from zope.event import notify
 from zope.component import (
     queryUtility,
     getUtility,
-    getAllUtilitiesRegisteredFor,
 )
-from zope.intid.interfaces import IIntIds
-from zope.app.component.hooks import getSite
+from plone.uuid.interfaces import IUUID
+from plone.uuid.interfaces import IUUIDGenerator
+from plone.uuid.interfaces import ATTRIBUTE_NAME
 from plone.multilingual.interfaces import (
     ILanguage,
     ITranslationManager,
@@ -18,18 +18,12 @@ from plone.multilingual.events import (
     ObjectWillBeTranslatedEvent,
     ObjectTranslatedEvent,
 )
+from plone.app.uuid.utils import uuidToObject
 
 
 class TranslationManager(object):
 
     interface.implements(ITranslationManager)
-
-    @property
-    def intids(self):
-        intids = queryUtility(IIntIds)
-        if not intids:
-            intids = getAllUtilitiesRegisteredFor(IIntIds)[0]
-        return intids
 
     def get_id(self, context):
         """If an object is created via portal factory we don't get a id, we
@@ -37,10 +31,20 @@ class TranslationManager(object):
            TODO: a better check if we are in the portal factory!
         """
         try:
-            context_id = self.intids.getId(context)
+            context_id = IUUID(context)
+        # We must ensure that this case can't happen, any object translatable
+        # will have an UUID (in any case we can be at the portal factory!)
         except KeyError, e:
-            self.intids.register(context)
-            context_id = self.intids.getId(context)
+            generator = queryUtility(IUUIDGenerator)
+            if generator is None:
+                return
+
+            uuid = generator()
+            if not uuid:
+                return
+
+            setattr(context, ATTRIBUTE_NAME, uuid)
+            context_id = IUUID(context)
         return context_id
 
     def __init__(self, context):
@@ -78,7 +82,7 @@ class TranslationManager(object):
     def register_translation(self, language, content):
         """ register a translation for an existing content """
         canonical = self._get_or_create()
-        if type(content) == int:
+        if type(content) == str:
             content_id = content
         else:
             content_id = self.get_id(content)
@@ -134,7 +138,7 @@ class TranslationManager(object):
         translation = None
         canonical = self._get_canonical()
         if canonical is not None:
-            translation = self.intids.getObject(canonical.get_item(language))
+            translation = uuidToObject(canonical.get_item(language))
         return translation
 
     def get_translations(self):
@@ -143,7 +147,7 @@ class TranslationManager(object):
         canonical = self._get_canonical()
         if canonical is not None:
             for language, content_id in canonical.get_items():
-                translations[language] = self.intids.getObject(content_id)
+                translations[language] = uuidToObject(content_id)
         return translations
 
     def get_translated_languages(self):

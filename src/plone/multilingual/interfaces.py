@@ -130,7 +130,8 @@ class ITranslationManager(Interface):
         """
         query if there is an canonical for the context
         used for migration
-	    """
+        """
+
 
 class ICanonicalStorage(Interface):
 

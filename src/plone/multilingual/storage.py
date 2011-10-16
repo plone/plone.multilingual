@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-# vim: set ts=4 sw=4:
 from zope import interface
-from BTrees.IOBTree import IOBTree
+from BTrees.OOBTree import OOBTree
 from OFS.SimpleItem import SimpleItem
 from plone.multilingual.interfaces import ICanonicalStorage
 
@@ -13,7 +12,7 @@ class CanonicalStorage(SimpleItem):
 
     def __init__(self):
         self.id = id
-        self.canonicals = IOBTree()
+        self.canonicals = OOBTree()
 
     def get_canonical(self, id):
         """ get a canonical for a specific content-id """

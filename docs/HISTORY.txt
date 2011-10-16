@@ -1,0 +1,15 @@
+Changelog
+=========
+
+0.2 - unrealesed
+------------------
+
+- Updated testing facilities to Plone Core packages style [sneridagh]
+- Migrated from bare intids to plone.uuid facilities [sneridagh]
+- Due to the previous change from this version to above, it's only compatible with Plone 4.1 and above [sneridagh]
+
+
+0.1 - 2011-10-03
+------------------
+
+- Initial version [ramon, awello, sneridagh]

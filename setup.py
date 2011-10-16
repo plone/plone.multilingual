@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '0.1'
+version = '0.2'
 
 setup(name='plone.multilingual',
       version=version,
@@ -25,8 +25,8 @@ setup(name='plone.multilingual',
       zip_safe=False,
       install_requires=[
           'setuptools',
-          'five.intid',
-          'plone.app.intid'
+          'plone.uuid',
+          'plone.app.uuid'
       ],
       extras_require={
           'test': ['plone.app.testing', ],
