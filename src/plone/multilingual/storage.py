@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
-from zope import interface
+from zope.interface import implements
 from BTrees.OOBTree import OOBTree
 from OFS.SimpleItem import SimpleItem
-from plone.multilingual.interfaces import ICanonicalStorage
+from plone.multilingual.interfaces import IMultilingualStorage
 
 
 class CanonicalStorage(SimpleItem):
 
-    interface.implements(ICanonicalStorage)
-    id = 'canonical_storage'
+    implements(IMultilingualStorage)
+    id = 'portal_multilingual'
 
     def __init__(self):
         self.id = id

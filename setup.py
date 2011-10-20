@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '0.2'
+version = '0.1a2'
 
 setup(name='plone.multilingual',
       version=version,
@@ -16,7 +16,7 @@ setup(name='plone.multilingual',
       keywords='',
       author='Ramon Navarro Bosch',
       author_email='ramon@.nb@gmail.com',
-      url='http://github.com/bloodbare/plone.multilingual/',
+      url='http://github.com/plone/plone.multilingual/',
       license='GPL',
       packages=find_packages('src'),
       package_dir={'': 'src'},

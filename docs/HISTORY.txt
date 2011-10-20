@@ -1,15 +1,16 @@
 Changelog
 =========
 
-0.2 - unrealesed
+0.1a2 - 2011-10-20
 ------------------
 
 - Updated testing facilities to Plone Core packages style [sneridagh]
 - Migrated from bare intids to plone.uuid facilities [sneridagh]
 - Due to the previous change from this version to above, it's only compatible with Plone 4.1 and above [sneridagh]
+- Added upgrade step and upgrade browser view to convert the 0.1a1 intids based utility to the 0.1a2 uuids based one [sneridagh]
 
 
-0.1 - 2011-10-03
+0.1a1 - 2011-10-03
 ------------------
 
 - Initial version [ramon, awello, sneridagh]

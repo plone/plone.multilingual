@@ -62,7 +62,7 @@ class ITranslationCloner(Interface):
 
 class ICanonical(Interface):
 
-    languages = Attribute(u"dictionary {LANG_KEY: INTID, ...}")
+    languages = Attribute(u"dictionary {LANG_KEY: UUID, ...}")
 
     def add_item(language, intid):
         """ """
@@ -133,7 +133,21 @@ class ITranslationManager(Interface):
         """
 
 
+class IMultilingualStorage(Interface):
+    """ Stores the canonical objects at the portal_multilingual tool """
+
+    def add_canonical(id, canonical):
+        """ add canonical """
+
+    def get_canonical(id):
+        """ get canonical """
+
+    def remove_canonical(id):
+        """ remove canonical """
+
+
 class ICanonicalStorage(Interface):
+    """ Deprecated in 0.2, for migration purposes only """
 
     def add_canonical(id, canonical):
         """ add canonical """

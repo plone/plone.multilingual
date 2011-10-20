@@ -1,23 +1,19 @@
 from zope import interface
 from zope.event import notify
-from zope.component import (
-    queryUtility,
-    getUtility,
-)
+from zope.component import getUtility
 from plone.uuid.interfaces import IUUID
-from plone.uuid.interfaces import IUUIDGenerator
-from plone.uuid.interfaces import ATTRIBUTE_NAME
 from plone.multilingual.interfaces import (
     ILanguage,
     ITranslationManager,
     ITranslationFactory,
-    ICanonicalStorage,
+    IMultilingualStorage,
 )
 from plone.multilingual.canonical import Canonical
 from plone.multilingual.events import (
     ObjectWillBeTranslatedEvent,
     ObjectTranslatedEvent,
 )
+from plone.uuid.handlers import addAttributeUUID
 from plone.app.uuid.utils import uuidToObject
 
 
@@ -35,15 +31,8 @@ class TranslationManager(object):
         # We must ensure that this case can't happen, any object translatable
         # will have an UUID (in any case we can be at the portal factory!)
         except KeyError, e:
-            generator = queryUtility(IUUIDGenerator)
-            if generator is None:
-                return
-
-            uuid = generator()
-            if not uuid:
-                return
-
-            setattr(context, ATTRIBUTE_NAME, uuid)
+            addAttributeUUID(context, None)
+            context.reindexObject(idxs=['UID'])
             context_id = IUUID(context)
         return context_id
 
@@ -61,14 +50,14 @@ class TranslationManager(object):
 
     def _get_canonical(self):
         """ get the canonical for context """
-        storage = getUtility(ICanonicalStorage)
+        storage = getUtility(IMultilingualStorage)
         context_id = self.get_id(self.context)
         canonical = storage.get_canonical(context_id)
         return canonical
 
     def _add_canonical(self):
         """ create the cononical for context """
-        storage = getUtility(ICanonicalStorage)
+        storage = getUtility(IMultilingualStorage)
         context_id = self.get_id(self.context)
         canonical = Canonical()
         canonical.add_item(ILanguage(self.context).get_language(), context_id)
@@ -91,7 +80,7 @@ class TranslationManager(object):
         canonical.add_item(language, content_id)
 
         # register the canonical for the translated object
-        storage = getUtility(ICanonicalStorage)
+        storage = getUtility(IMultilingualStorage)
         storage.add_canonical(content_id, canonical)
         return
 
@@ -130,7 +119,7 @@ class TranslationManager(object):
             # remove language from canonical
             canonical.remove_item_by_language(language)
             # unregister the canonical for the translated object
-            storage = getUtility(ICanonicalStorage)
+            storage = getUtility(IMultilingualStorage)
             storage.remove_canonical(translated_id)
 
     def get_translation(self, language):

@@ -39,8 +39,8 @@
   </adapters>
   <utilities>
     <utility
-      interface="plone.multilingual.interfaces.ICanonicalStorage"
-      object="canonical_storage"/>
+      interface="plone.multilingual.interfaces.IMultilingualStorage"
+      object="portal_multilingual"/>
   </utilities>
 </componentregistry>
 
