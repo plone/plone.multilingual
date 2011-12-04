@@ -5,8 +5,8 @@
 
   <genericsetup:registerProfile
       name="default"
-      title="plone.multilingual (default)"
-      description="Multilingual support"
+      title="plone.multilingual"
+      description="Support package for multilingual extensions"
       directory="profiles/default"
       provides="Products.GenericSetup.interfaces.EXTENSION"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"

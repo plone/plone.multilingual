@@ -5,7 +5,7 @@ version = '0.1a2'
 
 setup(name='plone.multilingual',
       version=version,
-      description="Multilingual Core",
+      description="Multilingual extensions core package",
       long_description=open("README.rst").read() + "\n" +
                        open(os.path.join("docs", "HISTORY.txt")).read(),
       # Get more strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
@@ -16,7 +16,7 @@ setup(name='plone.multilingual',
       keywords='',
       author='Ramon Navarro Bosch',
       author_email='ramon@.nb@gmail.com',
-      url='http://github.com/plone/plone.multilingual/',
+      url='https://github.com/plone/plone.multilingual/',
       license='GPL',
       packages=find_packages('src'),
       package_dir={'': 'src'},
