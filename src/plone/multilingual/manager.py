@@ -103,6 +103,8 @@ class TranslationManager(object):
         translation_factory = ITranslationFactory(self.context)
         translated_object = translation_factory(language)
         ILanguage(translated_object).set_language(language)
+        # reindex the translated object
+        translated_object.reindexObject()
         # register the new translation
         translated_id = self.get_id(translated_object)
         self.register_translation(language, translated_id)
