@@ -162,9 +162,6 @@ class ICanonicalStorage(Interface):
 class ILanguageIndependentFieldsManager(Interface):
     context = Attribute("context", "A translatable object")
 
-    def get_field_names():
-        """ Return list of language independent fields' names """
-
     def copy_fields(translation):
         """ Copy language independent fields to translation."""
 
