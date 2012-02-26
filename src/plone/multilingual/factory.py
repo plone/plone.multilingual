@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from plone.multilingual.interfaces import (
     ITranslationFactory,
+    ILanguageIndependentFieldsManager,
     ITranslationLocator,
     ITranslationCloner,
     ITranslationIdChooser,
@@ -10,6 +11,20 @@ from zope import interface
 from Acquisition import aq_parent
 from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
 
+
+class DefaultLanguageIndependentFieldsManager(object):
+    """ Default language independent fields manager.
+    """
+    interface.implements(ILanguageIndependentFieldsManager)
+
+    def __init__(self, context):
+        self.context = context
+
+    def get_field_names(self):
+        return []
+
+    def copy_fields(self, translation):
+        return
 
 class DefaultTranslationLocator(object):
 
