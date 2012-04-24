@@ -4,43 +4,51 @@
     <subscriber
       for="plone.multilingual.interfaces.ITranslatable
            zope.lifecycleevent.interfaces.IObjectModifiedEvent"
-      handler="plone.multilingual.subscriber.update_on_modify"/>
+      handler="plone.multilingual.subscriber.update_on_modify"
+      remove="True" />
     <subscriber
       for="plone.multilingual.interfaces.ITranslatable
            OFS.interfaces.IObjectWillBeRemovedEvent"
-      handler="plone.multilingual.subscriber.remove_translation_on_delete"/>
+      handler="plone.multilingual.subscriber.remove_translation_on_delete"
+      remove="True" />
   </subscribers>
   <adapters>
     <adapter
       for="plone.multilingual.interfaces.ITranslatable"
       provides="plone.multilingual.interfaces.ITranslationManager"
       factory="plone.multilingual.manager.TranslationManager"
+      remove="True"
     />
     <adapter
       for="plone.multilingual.interfaces.ITranslatable"
       provides="plone.multilingual.interfaces.ITranslationLocator"
       factory="plone.multilingual.factory.DefaultTranslationLocator"
+      remove="True"
     />
     <adapter
       for="plone.multilingual.interfaces.ITranslatable"
       provides="plone.multilingual.interfaces.ITranslationIdChooser"
       factory="plone.multilingual.factory.DefaultTranslationIdChooser"
+      remove="True"
     />
     <adapter
       for="plone.multilingual.interfaces.ITranslatable"
       provides="plone.multilingual.interfaces.ITranslationCloner"
       factory="plone.multilingual.factory.DefaultTranslationCloner"
+      remove="True"
     />
     <adapter
       for="plone.multilingual.interfaces.ITranslatable"
       provides="plone.multilingual.interfaces.ITranslationFactory"
       factory="plone.multilingual.factory.DefaultTranslationFactory"
+      remove="True"
     />
   </adapters>
   <utilities>
     <utility
       interface="plone.multilingual.interfaces.IMultilingualStorage"
-      object="portal_multilingual"/>
+      object="portal_multilingual"
+      remove="True" />
   </utilities>
 </componentregistry>
 

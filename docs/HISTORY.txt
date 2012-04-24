@@ -4,7 +4,7 @@ Changelog
 1.0b2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fixed the uninstall profile. [maurits]
 
 
 1.0b1 - 2012-04-03
