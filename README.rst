@@ -8,7 +8,7 @@ These are the main artifacts and its purposes:
     canonical:
         * the canonical organizes the information about a "translation-group"
         * it's using a dictionary with language-codes as keys and uuids 
-        (provided by plone.uuid) as values
+          (provided by plone.uuid) as values
 
     storage:
         * persistent storage, which holds the canonicals in an IOBTree
