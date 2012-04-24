@@ -11,7 +11,6 @@ from zope.configuration import xmlconfig
 from zope.interface import implements
 from zope.component import adapts
 from plone.multilingual.interfaces import ITranslatable, ILanguage
-from plone.uuid.interfaces import IAttributeUUID
 
 
 class DemoLanguage(object):

@@ -30,7 +30,7 @@ class TranslationManager(object):
             context_id = IUUID(context)
         # We must ensure that this case can't happen, any object translatable
         # will have an UUID (in any case we can be at the portal factory!)
-        except KeyError, e:
+        except KeyError:
             addAttributeUUID(context, None)
             context.reindexObject(idxs=['UID'])
             context_id = IUUID(context)
