@@ -164,5 +164,3 @@ class ILanguageIndependentFieldsManager(Interface):
 
     def copy_fields(translation):
         """ Copy language independent fields to translation."""
-
-

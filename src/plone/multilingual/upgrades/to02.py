@@ -2,7 +2,8 @@ from Products.CMFCore.utils import getToolByName
 from plone.dexterity.interfaces import IDexterityContent
 from plone.uuid.handlers import addAttributeUUID
 from plone.uuid.interfaces import IUUID
-from zope.component import getUtility, queryUtility, getAllUtilitiesRegisteredFor
+from zope.component import getUtility, queryUtility
+from zope.component import getAllUtilitiesRegisteredFor
 from plone.multilingual.interfaces import IMultilingualStorage
 from zope.intid.interfaces import IIntIds
 from plone.multilingual.canonical import Canonical
@@ -16,7 +17,8 @@ def upgrade(context):
     # Borrowed from plone.app.dexterity :)
 
     logger = logging.getLogger('plone.multilingual')
-    logger.info('Adding missing UUIDs to the already existing dexterity content types')
+    logger.info('Adding missing UUIDs to the already existing '
+                'dexterity content types')
 
     catalog = getToolByName(context, 'portal_catalog')
     query = {'object_provides': IDexterityContent.__identifier__}

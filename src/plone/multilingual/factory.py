@@ -26,6 +26,7 @@ class DefaultLanguageIndependentFieldsManager(object):
     def copy_fields(self, translation):
         return
 
+
 class DefaultTranslationLocator(object):
 
     interface.implements(ITranslationLocator)
