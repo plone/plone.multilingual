@@ -3,4 +3,4 @@
     <required tool_id="portal_multilingual"
         class="plone.multilingual.storage.CanonicalStorage"/>
 </tool-setup>
-        
+
