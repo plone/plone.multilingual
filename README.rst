@@ -174,5 +174,5 @@ we shouldn't find the storage-utility anymore::
 
     >>> from plone.multilingual.interfaces import IMultilingualStorage
     >>> gsm = portal.getSiteManager()
-    >>> gsm.queryUtility(IMultilingualStorage) == None
+    >>> gsm.queryUtility(IMultilingualStorage) is None
     True
