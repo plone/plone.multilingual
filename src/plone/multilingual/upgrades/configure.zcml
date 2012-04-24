@@ -6,7 +6,7 @@
   <genericsetup:upgradeStep
     source="0.1"
     destination="02"
-    title="Convert translation based initids to uuids"
+    title="Convert translation based intids to uuids"
     profile="plone.multilingual:default"
     handler=".to02.upgrade"
     />

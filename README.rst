@@ -161,7 +161,7 @@ An upgrade step is available in case of having an existing site with the experim
 
 You can run the @@pml-upgrade view at the root of your site or follow the upgrade step in
 portal_setup > upgrades. If you can't see the upgrade step, press *Show old upgrades* and 
-select the *Convert translation based initids to uuids (0.1 → 02)*
+select the *Convert translation based intids to uuids (0.1 → 02)*
 
 uninstall-profile
 -----------------
