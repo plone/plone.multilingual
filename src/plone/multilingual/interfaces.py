@@ -2,7 +2,7 @@ from zope.interface import Interface, Attribute
 
 
 # CONSTANTS
-LANGUAGE_INDEPENDENT = 'no_language'
+LANGUAGE_INDEPENDENT = ''
 
 
 # Language-support

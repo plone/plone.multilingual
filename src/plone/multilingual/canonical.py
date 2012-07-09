@@ -20,7 +20,7 @@ class Canonical(Persistent, Contained):
     def add_item(self, language, id):
         if language in self.languages.keys():
             raise KeyError("Translation already exists")
-        if not language:
+        if not language and language!='':
             raise KeyError("There is no target language")
         self.languages[language] = id
 
