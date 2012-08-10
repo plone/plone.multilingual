@@ -92,7 +92,7 @@ has_translation::
 register_translation with invalid language::
 
     >>> ITranslationManager(portal['ob1']).remove_translation('en')
-    >>> ITranslationManager(portal['ob1']).register_translation('', portal['ob1-en'])
+    >>> ITranslationManager(portal['ob1']).register_translation(None, portal['ob1-en'])
     Traceback (most recent call last):
     ...
     KeyError: 'There is no target language'

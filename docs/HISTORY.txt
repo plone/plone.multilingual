@@ -4,11 +4,16 @@ Changelog
 1.0b3 (unreleased)
 ------------------
 
+- Do not raise a KeyError when registering or adding a language
+  independent translation.
+  [maurits]
+
 
 1.0b2 - 2012-07-09
 ------------------
 
 - Change Language Independent identifier to '' [ramon]
+
 - Fixed the uninstall profile. [maurits]
 
 

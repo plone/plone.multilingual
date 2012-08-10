@@ -70,6 +70,8 @@ class TranslationManager(object):
 
     def register_translation(self, language, content):
         """ register a translation for an existing content """
+        if not language and language != '':
+            raise KeyError('There is no target language')
         canonical = self._get_or_create()
         if type(content) == str:
             content_id = content
@@ -95,7 +97,7 @@ class TranslationManager(object):
 
     def add_translation(self, language):
         """ see interfaces """
-        if not language:
+        if not language and language != '':
             raise KeyError('There is no target language')
         # event
         notify(ObjectWillBeTranslatedEvent(self.context, language))
