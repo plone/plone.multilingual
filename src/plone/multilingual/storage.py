@@ -28,3 +28,7 @@ class CanonicalStorage(SimpleItem):
     def remove_canonical(self, id):
         """ remove a canonical """
         self.canonicals.pop(id)
+
+    def get_canonicals(self):
+        """ get all canonicals """
+        return self.canonicals

@@ -112,12 +112,30 @@ changing the content-language (there should act a subscriber)::
     >>> ITranslationManager(portal['ob1']).get_translations()
     {'ca': <ATFolder at /plone/ob1>, 'it': <ATFolder at /plone/ob1-en>}
 
+test more translations::
+
+    >>> obj_it = ITranslationManager(portal['ob1']).get_translation('it')
+    >>> ITranslationManager(obj_it).add_translation('fr')
+    >>> ITranslationManager(obj_it).add_translation('pt')
+    >>> ITranslationManager(portal['ob1']).get_translated_languages()
+    ['fr', 'ca', 'it', 'pt']
+    >>> ITranslationManager(obj_it).get_translated_languages()
+    ['fr', 'ca', 'it', 'pt']
+
+test if canonicals objects are the same::
+
+    >>> obj_ca = ITranslationManager(obj_it).get_translation('ca')
+    >>> canonical_it = ITranslationManager(obj_it)._get_canonical()
+    >>> canonical_ca = ITranslationManager(obj_ca)._get_canonical()
+    >>> id(canonical_it) == id(canonical_ca)
+    True
+
 test the delete-subscriber::
 
     >>> from OFS.event import ObjectWillBeRemovedEvent
     >>> notify(ObjectWillBeRemovedEvent(ITranslationManager(portal['ob1']).get_translation('it')))
     >>> ITranslationManager(portal['ob1']).get_translations()
-    {'ca': <ATFolder at /plone/ob1>}
+    {'fr': <ATFolder at /plone/ob1-fr>, 'ca': <ATFolder at /plone/ob1>, 'pt': <ATFolder at /plone/ob1-pt>}
 
 Default-Adapters
 ----------------

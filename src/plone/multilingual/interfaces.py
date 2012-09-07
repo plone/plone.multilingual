@@ -145,6 +145,9 @@ class IMultilingualStorage(Interface):
     def remove_canonical(id):
         """ remove canonical """
 
+    def get_canonicals():
+        """ get all canonicals """
+
 
 class ICanonicalStorage(Interface):
     """ Deprecated in 0.2, for migration purposes only """
