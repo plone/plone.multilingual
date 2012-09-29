@@ -7,7 +7,7 @@ These are the main artifacts and its purposes:
 
     canonical:
         * the canonical organizes the information about a "translation-group"
-        * it's using a dictionary with language-codes as keys and uuids 
+        * it's using a dictionary with language-codes as keys and uuids
         (provided by plone.uuid) as values
 
     storage:
@@ -40,7 +40,7 @@ called DemoLanguage that will allow to get the language of the object::
     >>> ILanguage(portal['ob1']).set_language('ca')
 
 Ensuring that the new object gets its UUID::
-    
+
     >>> from plone.uuid.interfaces import IUUID
     >>> ob1_uuid = IUUID(portal['ob1'])
     >>> isinstance(ob1_uuid, str)
@@ -137,6 +137,66 @@ test the delete-subscriber::
     >>> ITranslationManager(portal['ob1']).get_translations()
     {'fr': <ATFolder at /plone/ob1-fr>, 'ca': <ATFolder at /plone/ob1>, 'pt': <ATFolder at /plone/ob1-pt>}
 
+Messing up with content
+-----------------------
+In case that we do mess up things with content (users always do)::
+
+    >>> portal.invokeFactory('Folder', 'ob2', title=u"An archetypes based doc")
+    'ob2'
+    >>> ILanguage(portal['ob2']).set_language('it')
+    >>> ITranslationManager(portal['ob2']).add_translation('en')
+    >>> ob2_en = ITranslationManager(portal['ob2']).get_translation('en')
+
+    >>> portal.invokeFactory('Folder', 'ob3', title=u"An archetypes based doc")
+    'ob3'
+    >>> ILanguage(portal['ob3']).set_language('it')
+    >>> ITranslationManager(portal['ob3']).add_translation('es')
+    >>> ob3_es = ITranslationManager(portal['ob3']).get_translation('es')
+
+    >>> from OFS.event import ObjectWillBeRemovedEvent
+    >>> notify(ObjectWillBeRemovedEvent(portal['ob2']))
+    >>> portal.manage_delObjects('ob2')
+
+    >>> notify(ObjectWillBeRemovedEvent(ob3_es))
+    >>> portal.manage_delObjects(ob3_es.id)
+
+    >>> c_old = ITranslationManager(portal['ob3'])._get_canonical()
+    >>> c_new = ITranslationManager(ob2_en)._get_canonical()
+    >>> id(c_old) == id(c_new)
+    False
+
+    >>> from plone.multilingual.canonical import Canonical
+    >>> isinstance(c_old, Canonical)
+    True
+    >>> isinstance(c_new, Canonical)
+    True
+
+    >>> ITranslationManager(ob2_en).register_translation('it', portal['ob3'])
+
+    >>> c1 = ITranslationManager(portal['ob3'])._get_canonical()
+    >>> c2 = ITranslationManager(ob2_en)._get_canonical()
+    >>> id(c1) == id(c2)
+    True
+
+Other use case, A('it' + 'en') and B('it' + 'es'), and we want A('en') -> B('es')::
+
+    >>> portal.invokeFactory('Folder', 'mess1', title=u"An archetypes based doc")
+    'mess1'
+    >>> ILanguage(portal['mess1']).set_language('it')
+    >>> ITranslationManager(portal['mess1']).add_translation('en')
+    >>> mess1_en = ITranslationManager(portal['mess1']).get_translation('en')
+
+    >>> portal.invokeFactory('Folder', 'mess2', title=u"An archetypes based doc")
+    'mess2'
+    >>> ILanguage(portal['mess2']).set_language('it')
+    >>> ITranslationManager(portal['mess2']).add_translation('es')
+    >>> mess2_es = ITranslationManager(portal['mess2']).get_translation('es')
+
+    >>> ITranslationManager(mess1_en).register_translation('es', mess2_es)
+    >>> ITranslationManager(portal['mess2']).get_translation('es')
+    >>> ITranslationManager(portal['mess1']).get_translation('es')
+    <ATFolder at /plone/mess2-es>
+
 Default-Adapters
 ----------------
 id-chooser::
@@ -172,13 +232,13 @@ An upgrade step is available in case of having an existing site with the experim
 
 .. note::
     You must reinstall the plone.multilingual package in order to install the required new
-    utility in place before upgrading. If you are using a version of Dexterity below 2.0, you 
-    must install the package plone.app.referenceablebehavior and enable the *Referenceable* 
-    (plone.app.referenceablebehavior.referenceable.IReferenceable) behavior for all your 
+    utility in place before upgrading. If you are using a version of Dexterity below 2.0, you
+    must install the package plone.app.referenceablebehavior and enable the *Referenceable*
+    (plone.app.referenceablebehavior.referenceable.IReferenceable) behavior for all your
     Dexterity content types before you attempt to upgrade your site.
 
 You can run the @@pml-upgrade view at the root of your site or follow the upgrade step in
-portal_setup > upgrades. If you can't see the upgrade step, press *Show old upgrades* and 
+portal_setup > upgrades. If you can't see the upgrade step, press *Show old upgrades* and
 select the *Convert translation based intids to uuids (0.1 → 02)*
 
 uninstall-profile

@@ -8,6 +8,11 @@ Changelog
   independent translation.
   [maurits]
 
+- Take account on the use case where user could do and do changes
+  on the translations groups and its members. Be sure that it does
+  not leaves any traces of orphan objects in the storage.
+  [ramon, sneridagh]
+
 
 1.0b2 - 2012-07-09
 ------------------
