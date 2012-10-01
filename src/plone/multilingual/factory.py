@@ -35,12 +35,19 @@ class DefaultTranslationLocator(object):
         self.context = context
 
     def __call__(self, language):
+        """
+        Look for the closest translated folder or siteroot
+        """
         parent = aq_parent(self.context)
-        if not IPloneSiteRoot.providedBy(parent):
+        translated_parent = parent
+        found = False
+        while not IPloneSiteRoot.providedBy(parent) and not found:
             parent_translation = ITranslationManager(parent)
             if parent_translation.has_translation(language):
-                parent = parent_translation.get_translation(language)
-        return parent
+                translated_parent = parent_translation.get_translation(language)
+                found = True
+            parent = aq_parent(parent)
+        return translated_parent
 
 
 class DefaultTranslationCloner(object):

@@ -89,11 +89,32 @@ class TranslationManager(object):
     def update(self):
         """ see interfaces"""
         language = ILanguage(self.context).get_language()
+        # In case language is already on the translated languages we are going to orphan the old translation
         if language not in self.get_translated_languages():
             canonical = self._get_or_create()
             content_id = self.get_id(self.context)
             canonical.remove_item_by_id(content_id)
             canonical.add_item(language, content_id)
+        else:
+            # We need to check if the language has changed
+            canonical = self._get_or_create()
+            content_id = self.get_id(self.context)
+            if canonical.get_item(language) != content_id:
+                # Is a different object -> remove the old one
+                # We get the old uuid
+                uuid_old_translation = canonical.get_item(language)
+                # Remove from the storage
+                storage = getUtility(IMultilingualStorage)
+                storage.remove_canonical(uuid_old_translation)
+                # Add the new one
+                content_id = self.get_id(self.context)
+                canonical.remove_item_by_id(content_id)
+                canonical.remove_item_by_id(uuid_old_translation)
+                canonical.add_item(language, content_id)
+                # Register the new canonical
+                new_canonical = Canonical()
+                new_canonical.add_item(language, uuid_old_translation)
+                storage.add_canonical(uuid_old_translation, new_canonical)
 
     def add_translation(self, language):
         """ see interfaces """
