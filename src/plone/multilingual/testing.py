@@ -22,10 +22,10 @@ class DemoLanguage(object):
         self.context = context
 
     def get_language(self):
-        return self.context.lang
+        return self.context.getLanguage()
 
     def set_language(self, lang):
-        self.context.lang = lang
+        self.context.setLanguage(lang)
 
 
 class PloneMultilingualLayer(PloneSandboxLayer):

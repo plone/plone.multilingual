@@ -30,6 +30,7 @@ called DemoLanguage that will allow to get the language of the object::
     >>> from plone.multilingual.interfaces import ITranslationManager
     >>> from plone.multilingual.interfaces import ILanguage
     >>> from plone.app.testing import setRoles, login, TEST_USER_ID, TEST_USER_NAME
+    >>> from zope.lifecycleevent import modified
 
     >>> portal = layer['portal']
     >>> setRoles(portal, TEST_USER_ID, ['Manager'])
@@ -38,6 +39,7 @@ called DemoLanguage that will allow to get the language of the object::
     'ob1'
 
     >>> ILanguage(portal['ob1']).set_language('ca')
+    >>> modified(portal['ob1'])
 
 Ensuring that the new object gets its UUID::
 
