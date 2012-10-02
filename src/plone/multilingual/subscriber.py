@@ -28,7 +28,8 @@ def set_recursive_language(obj, language):
     modified(obj)
     if IFolderish.providedBy(obj):
         for item in obj.items():
-            set_recursive_language(item, language)
+            if ITranslatable.providedBy(item):
+                set_recursive_language(item, language)
 
 
 # Subscriber to set language on the child folder
