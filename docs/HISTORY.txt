@@ -13,6 +13,14 @@ Changelog
   not leaves any traces of orphan objects in the storage.
   [ramon, sneridagh]
 
+- Added Copy/Paste subscribers [ramon]
+
+- Moved generic AddContent subscribers to check language integrity [ramon]
+
+- Bug solving on ITranslationLocator [ramon]
+
+- Updating language, checking translations integrity [ramon]
+
 
 1.0b2 - 2012-07-09
 ------------------
