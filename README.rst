@@ -1,13 +1,18 @@
 plone.multilingual
 ==================
 
-This package contains the core functionality for the next generation multilingual engine.
+This package contains the core functionality for the next generation
+multilingual engine for Plone.
+
+For more information about plone.app.multilingual, please visit::
+
+    https://github.com/plone/plone.app.multilingual
 
 These are the main artifacts and its purposes:
 
     canonical:
         * the canonical organizes the information about a "translation-group"
-        * it's using a dictionary with language-codes as keys and uuids 
+        * it's using a dictionary with language-codes as keys and uuids
           (provided by plone.uuid) as values
 
     storage:
@@ -40,7 +45,7 @@ called DemoLanguage that will allow to get the language of the object::
     >>> ILanguage(portal['ob1']).set_language('ca')
 
 Ensuring that the new object gets its UUID::
-    
+
     >>> from plone.uuid.interfaces import IUUID
     >>> ob1_uuid = IUUID(portal['ob1'])
     >>> isinstance(ob1_uuid, str)
@@ -154,13 +159,13 @@ An upgrade step is available in case of having an existing site with the experim
 
 .. note::
     You must reinstall the plone.multilingual package in order to install the required new
-    utility in place before upgrading. If you are using a version of Dexterity below 2.0, you 
-    must install the package plone.app.referenceablebehavior and enable the *Referenceable* 
-    (plone.app.referenceablebehavior.referenceable.IReferenceable) behavior for all your 
+    utility in place before upgrading. If you are using a version of Dexterity below 2.0, you
+    must install the package plone.app.referenceablebehavior and enable the *Referenceable*
+    (plone.app.referenceablebehavior.referenceable.IReferenceable) behavior for all your
     Dexterity content types before you attempt to upgrade your site.
 
 You can run the @@pml-upgrade view at the root of your site or follow the upgrade step in
-portal_setup > upgrades. If you can't see the upgrade step, press *Show old upgrades* and 
+portal_setup > upgrades. If you can't see the upgrade step, press *Show old upgrades* and
 select the *Convert translation based intids to uuids (0.1 → 02)*
 
 uninstall-profile
