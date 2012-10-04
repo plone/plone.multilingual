@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0b3 (unreleased)
+1.0b3 2012-10-04
 ------------------
 
 - Do not raise a KeyError when registering or adding a language
