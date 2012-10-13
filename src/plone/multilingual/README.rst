@@ -39,6 +39,7 @@ called DemoLanguage that will allow to get the language of the object::
     'ob1'
 
     >>> ILanguage(portal['ob1']).set_language('ca')
+    >>> portal['ob1'].reindexObject()
     >>> modified(portal['ob1'])
 
 Ensuring that the new object gets its UUID::
@@ -120,24 +121,17 @@ test more translations::
     >>> ITranslationManager(obj_it).add_translation('fr')
     >>> ITranslationManager(obj_it).add_translation('pt')
     >>> ITranslationManager(portal['ob1']).get_translated_languages()
-    ['fr', 'ca', 'it', 'pt']
+    ['ca', 'it', 'fr', 'pt']
     >>> ITranslationManager(obj_it).get_translated_languages()
-    ['fr', 'ca', 'it', 'pt']
+    ['ca', 'it', 'fr', 'pt']
 
 test if canonicals objects are the same::
 
     >>> obj_ca = ITranslationManager(obj_it).get_translation('ca')
-    >>> canonical_it = ITranslationManager(obj_it)._get_canonical()
-    >>> canonical_ca = ITranslationManager(obj_ca)._get_canonical()
-    >>> id(canonical_it) == id(canonical_ca)
+    >>> canonical_it = ITranslationManager(obj_it).query_canonical()
+    >>> canonical_ca = ITranslationManager(obj_ca).query_canonical()
+    >>> canonical_it == canonical_ca
     True
-
-test the delete-subscriber::
-
-    >>> from OFS.event import ObjectWillBeRemovedEvent
-    >>> notify(ObjectWillBeRemovedEvent(ITranslationManager(portal['ob1']).get_translation('it')))
-    >>> ITranslationManager(portal['ob1']).get_translations()
-    {'fr': <ATFolder at /plone/ob1-fr>, 'ca': <ATFolder at /plone/ob1>, 'pt': <ATFolder at /plone/ob1-pt>}
 
 Messing up with content
 -----------------------
@@ -162,22 +156,21 @@ In case that we do mess up things with content (users always do)::
     >>> notify(ObjectWillBeRemovedEvent(ob3_es))
     >>> portal.manage_delObjects(ob3_es.id)
 
-    >>> c_old = ITranslationManager(portal['ob3'])._get_canonical()
-    >>> c_new = ITranslationManager(ob2_en)._get_canonical()
-    >>> id(c_old) == id(c_new)
+    >>> c_old = ITranslationManager(portal['ob3']).query_canonical()
+    >>> c_new = ITranslationManager(ob2_en).query_canonical()
+    >>> c_old == c_new
     False
 
-    >>> from plone.multilingual.canonical import Canonical
-    >>> isinstance(c_old, Canonical)
+    >>> isinstance(c_old, str)
     True
-    >>> isinstance(c_new, Canonical)
+    >>> isinstance(c_new, str)
     True
 
     >>> ITranslationManager(ob2_en).register_translation('it', portal['ob3'])
 
-    >>> c1 = ITranslationManager(portal['ob3'])._get_canonical()
-    >>> c2 = ITranslationManager(ob2_en)._get_canonical()
-    >>> id(c1) == id(c2)
+    >>> c1 = ITranslationManager(portal['ob3']).query_canonical()
+    >>> c2 = ITranslationManager(ob2_en).query_canonical()
+    >>> c1 == c2
     True
 
 Other use case, A('it' + 'en') and B('it' + 'es'), and we want A('en') -> B('es')::

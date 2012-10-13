@@ -7,10 +7,6 @@
       handler="plone.multilingual.subscriber.update_on_modify"/>
     <subscriber
       for="plone.multilingual.interfaces.ITranslatable
-           OFS.interfaces.IObjectWillBeRemovedEvent"
-      handler="plone.multilingual.subscriber.remove_translation_on_delete"/>
-    <subscriber
-      for="plone.multilingual.interfaces.ITranslatable
          zope.app.container.interfaces.IObjectAddedEvent"
       handler="plone.multilingual.subscriber.createdEvent"/>
     <subscriber
@@ -49,10 +45,5 @@
       factory="plone.multilingual.factory.DefaultTranslationFactory"
     />
   </adapters>
-  <utilities>
-    <utility
-      interface="plone.multilingual.interfaces.IMultilingualStorage"
-      object="portal_multilingual"/>
-  </utilities>
 </componentregistry>
 

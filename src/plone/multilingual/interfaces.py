@@ -4,6 +4,9 @@ from zope.interface import Interface, Attribute
 # CONSTANTS
 LANGUAGE_INDEPENDENT = ''
 
+ATTRIBUTE_NAME = '_plone.tg'
+
+NOTG = 'notg'
 
 # Language-support
 class ILanguage(Interface):
@@ -167,3 +170,25 @@ class ILanguageIndependentFieldsManager(Interface):
 
     def copy_fields(translation):
         """ Copy language independent fields to translation."""
+
+
+class IMutableTG(Interface):
+    """Adapt an object to this interface to manage the TG of an object
+    
+    Be sure of what you are doing. TG is supposed to be stable and
+    widely used
+    """
+    def get():
+        """Return the TG of the context"""
+    
+    def set(tg):
+        """Set the unique id of the context with the tg value.
+        """
+
+
+class ITG(Interface):
+    """Abstract representation of a TG.
+
+    Adapt an object to this interface to obtain its UUID. Adaptation will
+    fail if the object does not have a TG (yet).
+    """

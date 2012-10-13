@@ -6,7 +6,10 @@ from zope.component import getUtility, queryUtility
 from zope.component import getAllUtilitiesRegisteredFor
 from plone.multilingual.interfaces import IMultilingualStorage
 from zope.intid.interfaces import IIntIds
-from plone.multilingual.canonical import Canonical
+try:
+    from plone.multilingual.canonical import Canonical
+except ImportError:
+    from plone.multilingual.bbb.canonical import Canonical
 
 from Products.Five.browser import BrowserView
 import logging

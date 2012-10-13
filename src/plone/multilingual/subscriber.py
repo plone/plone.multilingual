@@ -10,12 +10,6 @@ from zope.lifecycleevent import modified
 from Products.CMFCore.interfaces import IFolderish
 
 
-# unregister the translation before the object will be removed
-def remove_translation_on_delete(obj, event):
-    language = ILanguage(obj).get_language()
-    ITranslationManager(obj).remove_translation(language)
-
-
 # In case is a normal content update translation manager with the new language
 def update_on_modify(obj, event):
     ITranslationManager(obj).update()

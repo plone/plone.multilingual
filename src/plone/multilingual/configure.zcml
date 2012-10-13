@@ -9,5 +9,14 @@
     <include file="profile.zcml" />
     <include package=".upgrades" />
 
+    <include package="plone.indexer" />
+    
+    <!-- Install indexer -->
+    <adapter factory=".adapter.attributeTG" />
+    <adapter factory=".adapter.MutableAttributeTG" />
+    
+    <adapter factory=".indexer.itgIndexer" name="TG" />
+    <subscriber handler=".handlers.addAttributeTG" />
+
 </configure>
 
