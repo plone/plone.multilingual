@@ -2,7 +2,7 @@ from zope.container.contained import Contained
 from zope.interface import implements
 from persistent import Persistent
 from persistent.dict import PersistentDict
-from plone.multilingual.interfaces import ICanonical
+from plone.multilingual.bbb.interfaces import ICanonical
 
 
 class Canonical(Persistent, Contained):

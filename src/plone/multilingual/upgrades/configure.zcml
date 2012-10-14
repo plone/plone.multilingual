@@ -11,6 +11,14 @@
     handler=".to02.upgrade"
     />
 
+  <genericsetup:upgradeStep
+    source="02"
+    destination="03"
+    title="Convert from external storage to catalog and ids"
+    profile="plone.multilingual:default"
+    handler=".to03.upgrade"
+    />
+
     <browser:page
       name="pml-upgrade"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"

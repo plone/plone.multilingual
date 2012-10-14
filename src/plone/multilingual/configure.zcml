@@ -14,9 +14,12 @@
     <!-- Install indexer -->
     <adapter factory=".adapter.attributeTG" />
     <adapter factory=".adapter.MutableAttributeTG" />
-    
-    <adapter factory=".indexer.itgIndexer" name="TG" />
+
+    <adapter factory=".indexer.itgIndexer" name="TranslationGroup" />
+    <adapter factory=".indexer.LanguageIndexer" name="Language" />
     <subscriber handler=".handlers.addAttributeTG" />
+
+
 
 </configure>
 

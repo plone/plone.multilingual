@@ -8,6 +8,6 @@ def itgIndexer(obj):
 
 
 @indexer(ITranslatable)
-def Language(object, **kw):
+def LanguageIndexer(object, **kw):
     language = ILanguage(object).get_language()
     return language

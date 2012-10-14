@@ -57,7 +57,7 @@ class TranslationManager(object):
         # will have an UUID (in any case we can be at the portal factory!)
         except TypeError:
             addAttributeTG(context, None)
-            context.reindexObject(idxs=['TG'])
+            context.reindexObject(idxs=['TranslationGroup'])
             context_id = ITG(context)
         return context_id
 
@@ -75,7 +75,7 @@ class TranslationManager(object):
             content_obj = content
 
         # Check if exists and is not myself
-        brains = self.pcatalog(TG=self.tg, Language=language)
+        brains = self.pcatalog(TranslationGroup=self.tg, Language=language)
         if len(brains) > 0 and brains[0].UID != self.get_id(content_obj):
             raise KeyError("Translation already exists")
 
@@ -90,7 +90,7 @@ class TranslationManager(object):
         language = ILanguage(self.context).get_language()
         self.context.reindexObject()
         # In case language is already on the translated languages we are going to orphan the old translation
-        brains = self.pcatalog.searchResults(TG=self.tg, Language=language)
+        brains = self.pcatalog.searchResults(TranslationGroup=self.tg, Language=language)
         if len(brains) == 0:
             # There is not a translation with this tg on this language
             self.register_translation(language, self.context)
@@ -103,6 +103,7 @@ class TranslationManager(object):
                 # We get the old uuid
                 old_object = brain.getObject()
                 IMutableTG(old_object).set(NOTG)
+                old_object.reindexObject()
 
     def add_translation(self, language):
         """ see interfaces """
@@ -131,7 +132,7 @@ class TranslationManager(object):
 
     def get_translation(self, language):
         """ see interfaces """
-        brains = self.pcatalog.searchResults(TG=self.tg, Language=language)
+        brains = self.pcatalog.searchResults(TranslationGroup=self.tg, Language=language)
         if len(brains) != 1:
             return None
         return brains[0].getObject()
@@ -139,7 +140,7 @@ class TranslationManager(object):
     def get_translations(self):
         """ see interfaces """
         translations = {}
-        brains = self.pcatalog.searchResults(TG=self.tg)
+        brains = self.pcatalog.searchResults(TranslationGroup=self.tg)
         for brain in brains:
             translations[brain.Language] = brain.getObject()
         return translations
@@ -147,7 +148,7 @@ class TranslationManager(object):
     def get_translated_languages(self):
         """ see interfaces """
         languages = []
-        brains = self.pcatalog.searchResults(TG=self.tg)
+        brains = self.pcatalog.searchResults(TranslationGroup=self.tg)
         for brain in brains:
             languages.append(brain.Language)
         return languages

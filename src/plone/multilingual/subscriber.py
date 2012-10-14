@@ -9,6 +9,8 @@ from zope.component.hooks import getSite
 from zope.lifecycleevent import modified
 from Products.CMFCore.interfaces import IFolderish
 
+def remove_translation_on_delete(obj, event):
+    pass
 
 # In case is a normal content update translation manager with the new language
 def update_on_modify(obj, event):
