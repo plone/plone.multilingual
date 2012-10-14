@@ -23,5 +23,5 @@ def upgrade(context):
                 obj.reindexObject()
             already_added_canonicals.append(id(canonical_object))
     # Uninstall the utility
-
+    
     pass
