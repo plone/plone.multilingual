@@ -15,7 +15,6 @@ def upgrade(context):
     canonicals = storage.get_canonicals()
     already_added_canonicals = []
     generator = queryUtility(IUUIDGenerator)
-    import pdb; pdb.set_trace()
     for canonical in canonicals.keys():
         canonical_object = canonicals[canonical]
         canonical_languages = canonical_object.get_keys()
