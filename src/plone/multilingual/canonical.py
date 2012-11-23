@@ -1,8 +1,9 @@
+# XXX To Remove, Only for BBB compatibility
 from zope.container.contained import Contained
 from zope.interface import implements
 from persistent import Persistent
 from persistent.dict import PersistentDict
-from plone.multilingual.bbb.interfaces import ICanonical
+from plone.multilingual.interfaces import ICanonical
 
 
 class Canonical(Persistent, Contained):

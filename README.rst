@@ -168,16 +168,15 @@ You can run the @@pml-upgrade view at the root of your site or follow the upgrad
 portal_setup > upgrades. If you can't see the upgrade step, press *Show old upgrades* and
 select the *Convert translation based intids to uuids (0.1 → 02)*
 
-uninstall-profile
------------------
+Upgrade to catalog
+------------------
 ::
 
-    >>> from plone.app.testing import applyProfile
-    >>> applyProfile(portal, 'plone.multilingual:uninstall')
+    >>> from plone.multilingual.upgrades.to03 import upgrade
 
 we shouldn't find the storage-utility anymore::
 
-    >>> from plone.multilingual.interfaces import IMultilingualStorage
+    >>> from plone.multilingual.bbb.interfaces import IMultilingualStorage
     >>> gsm = portal.getSiteManager()
     >>> gsm.queryUtility(IMultilingualStorage) is None
     True

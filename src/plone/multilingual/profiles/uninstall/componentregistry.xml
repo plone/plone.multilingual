@@ -44,11 +44,5 @@
       remove="True"
     />
   </adapters>
-  <utilities>
-    <utility
-      interface="plone.multilingual.interfaces.IMultilingualStorage"
-      object="portal_multilingual"
-      remove="True" />
-  </utilities>
 </componentregistry>
 
