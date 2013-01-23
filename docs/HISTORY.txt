@@ -4,6 +4,9 @@ Changelog
 1.0b3 2012-10-04
 ------------------
 
+- added TestSubscribers to test subscribers for IObjectAddedEvent,
+  IObjectCopiedEvent and IObjectMovedEvent [gborelli]
+
 - Do not raise a KeyError when registering or adding a language
   independent translation.
   [maurits]
