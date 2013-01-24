@@ -1,3 +1,4 @@
+from Acquisition import aq_parent
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from plone.multilingual.interfaces import (
     LANGUAGE_INDEPENDENT,
@@ -6,7 +7,7 @@ from plone.multilingual.interfaces import (
     ILanguage)
 from Products.CMFCore.utils import getToolByName
 from zope.component.hooks import getSite
-from zope.lifecycleevent import modified
+from zope.lifecycleevent import modified, ObjectCopiedEvent
 from Products.CMFCore.interfaces import IFolderish
 
 def remove_translation_on_delete(obj, event):
@@ -31,7 +32,10 @@ def set_recursive_language(obj, language):
 # Subscriber to set language on the child folder
 def createdEvent(obj, event):
     portal = getSite()
-    parent = event.newParent
+    if isinstance(event, ObjectCopiedEvent):
+        parent = aq_parent(event.object)
+    else:
+        parent = event.newParent
     language_tool = getToolByName(portal, 'portal_languages')
     if (language_tool.startNeutral() and
         ITranslatable.providedBy(obj)):

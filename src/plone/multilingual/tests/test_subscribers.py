@@ -6,6 +6,8 @@ from plone.app.testing import setRoles
 from ..interfaces import ILanguage
 from ..testing import PLONEMULTILINGUAL_INTEGRATION_TESTING
 
+import transaction
+
 
 class TestSubscribers(unittest.TestCase):
     """There are some events that are fired when an object
@@ -39,12 +41,16 @@ class TestSubscribers(unittest.TestCase):
 
     def test_moved_event(self):
         folder = self._add_content(self.folder_it, 'Folder', 'folder_1')
-        id_ = self.folder_it.manage_cutObjects(folder)
+        transaction.commit()
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
+        id_ = self.folder_it.manage_cutObjects(folder.getId())
         self.folder_en.manage_pasteObjects(id_)
-        self.assertEqual(ILanguage(folder).get_language(), 'en')
+        copied_folder = getattr(self.folder_en, "folder_1")
+        self.assertEqual(ILanguage(copied_folder).get_language(), 'en')
 
     def test_copied_event(self):
         folder = self._add_content(self.folder_it, 'Folder', 'folder_1')
         id_ = self.folder_it.manage_copyObjects(folder.getId())
         self.folder_en.manage_pasteObjects(id_)
-        self.assertEqual(ILanguage(folder).get_language(), 'en')
+        copied_folder = getattr(self.folder_en, "folder_1")
+        self.assertEqual(ILanguage(copied_folder).get_language(), 'en')
