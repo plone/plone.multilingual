@@ -1,6 +1,23 @@
 Changelog
 =========
 
+1.0 Unreleased
+--------------
+
+
+1.0rc1 2013-01-26
+-----------------
+
+- Moved the external tool to catalog and added content attribute  [ramon]
+
+- Upgrade steps from b3 to rc1 [ramon]
+
+- Fixed bugs on subscribers [sneridagh]
+
+- Make import of upgrade step "to02" depend on the existence of plone.dexterity [pysailor]
+
+- Added get_restricted_translations [ramon]
+
 1.0b3 2012-10-04
 ------------------
 
