@@ -151,7 +151,8 @@ class TranslationManager(object):
     def get_restricted_translations(self):
         """ see interfaces """
         translations = {}
-        brains = self.pcatalog.searchResults(TranslationGroup=self.tg)
+        brains = self.pcatalog.searchResults(TranslationGroup=self.tg,
+            Language='all')
         for brain in brains:
             translations[brain.Language] = brain.getObject()
         return translations
