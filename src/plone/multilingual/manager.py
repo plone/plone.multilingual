@@ -26,7 +26,10 @@ class TranslationManager(object):
 
     def __init__(self, context):
         self.context = context
-        self.tg = self.get_tg(context)
+        if isinstance(context, str):
+            self.tg = context
+        else:
+            self.tg = self.get_tg(context)
         self._canonical = None
         site = getSite()
         self.pcatalog = getToolByName(site, 'portal_catalog', None)
@@ -141,6 +144,14 @@ class TranslationManager(object):
         """ see interfaces """
         translations = {}
         brains = self.pcatalog.unrestrictedSearchResults(TranslationGroup=self.tg)
+        for brain in brains:
+            translations[brain.Language] = brain.getObject()
+        return translations
+
+    def get_restricted_translations(self):
+        """ see interfaces """
+        translations = {}
+        brains = self.pcatalog.searchResults(TranslationGroup=self.tg)
         for brain in brains:
             translations[brain.Language] = brain.getObject()
         return translations
