@@ -63,5 +63,9 @@ def renameOnEdit(obj, event):
             new_id = chooser.chooseName(name, obj)
 
             if new_id != old_id:
-                obj.setId(new_id)
-                notify(ObjectMovedEvent(obj, parent, old_id, parent, new_id))
+                if getattr(aq_base(obj), 'setId', None):
+                    obj.setId(new_id)
+                    notify(ObjectMovedEvent(
+                        obj, parent, old_id, parent, new_id))
+                else:
+                    parent.manage_renameObject(old_id, new_id)
