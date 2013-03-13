@@ -7,6 +7,9 @@ ATTRIBUTE_NAME = '_plone.tg'
 
 NOTG = 'notg'
 
+NEW_TRANSLATION = '_pam.newtrans'
+
+
 # Language-support
 class ILanguage(Interface):
 
@@ -121,13 +124,13 @@ class ILanguageIndependentFieldsManager(Interface):
 
 class IMutableTG(Interface):
     """Adapt an object to this interface to manage the TG of an object
-    
+
     Be sure of what you are doing. TG is supposed to be stable and
     widely used
     """
     def get():
         """Return the TG of the context"""
-    
+
     def set(tg):
         """Set the unique id of the context with the tg value.
         """
