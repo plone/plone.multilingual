@@ -1,9 +1,9 @@
 from plone.app.content.interfaces import INameFromTitle
-from plone.i18n.normalizer.interfaces import IIDNormalizer
+from plone.i18n.normalizer.interfaces import IUserPreferredURLNormalizer
 from plone.multilingual.interfaces import ITranslationManager
 
 from zope.component import adapter
-from zope.component import queryUtility, getUtility
+from zope.component import queryUtility
 from zope.container.interfaces import INameChooser
 
 from zope.event import notify
@@ -60,8 +60,11 @@ def renameOnEdit(obj, event):
             # If the obj does not provide INameFromTitle, use the ID normalizer
             # to create an id
             if not INameFromTitle(obj, None):
-                normalizer = getUtility(IIDNormalizer)
-                name = normalizer.normalize(obj.Title())
+                normalizer = IUserPreferredURLNormalizer(obj.REQUEST)
+                title = obj.Title()
+                if not isinstance(title, unicode):
+                    title = title.decode('utf-8')
+                name = normalizer.normalize(title)
             else:
                 name = None
             parent = aq_parent(obj)
