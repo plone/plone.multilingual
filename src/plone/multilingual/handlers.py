@@ -1,3 +1,4 @@
+from plone.app.content.interfaces import INameFromTitle
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.multilingual.interfaces import ITranslationManager
 
@@ -56,8 +57,13 @@ def renameOnEdit(obj, event):
         # handled by Plone
         if len(manager.get_translated_languages()) > 1:
             old_id = obj.id
-            normalizer = getUtility(IIDNormalizer)
-            name = normalizer.normalize(obj.Title())
+            # If the obj does not provide INameFromTitle, use the ID normalizer
+            # to create an id
+            if not INameFromTitle(obj, None):
+                normalizer = getUtility(IIDNormalizer)
+                name = normalizer.normalize(obj.Title())
+            else:
+                name = None
             parent = aq_parent(obj)
             chooser = INameChooser(parent)
             new_id = chooser.chooseName(name, obj)
