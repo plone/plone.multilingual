@@ -1,13 +1,13 @@
 from plone.app.content.interfaces import INameFromTitle
+from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.i18n.normalizer.interfaces import IUserPreferredURLNormalizer
-from plone.multilingual.interfaces import ITranslationManager
+from plone.locking.interfaces import ILockable
+from plone.multilingual.interfaces import ITranslationManager, ILanguage
 
 from zope.component import adapter
 from zope.component import queryUtility
 from zope.container.interfaces import INameChooser
 
-from zope.event import notify
-from zope.lifecycleevent import ObjectMovedEvent
 from zope.lifecycleevent.interfaces import IObjectCreatedEvent
 from zope.lifecycleevent.interfaces import IObjectCopiedEvent
 from zope.lifecycleevent.interfaces import IObjectModifiedEvent
@@ -40,22 +40,25 @@ def addAttributeTG(obj, event):
 
     setattr(obj, ATTRIBUTE_NAME, tg)
 
-    # also mark the item as new translation
-    setattr(obj, NEW_TRANSLATION, True)
+    # also mark the item as new translation, unless it is language-neutral
+    if ILanguage(obj).get_language() != '':
+        setattr(obj, NEW_TRANSLATION, True)
 
 
 @adapter(ITranslatable, IObjectModifiedEvent)
 def renameOnEdit(obj, event):
-
+    # Don't rename navigation roots
+    if INavigationRoot.providedBy(obj):
+        return
     # skip if the title is empty, obj has just been created
     if obj.Title() == '':
         return
     if getattr(obj, NEW_TRANSLATION, None):
         setattr(obj, NEW_TRANSLATION, False)
-        manager = ITranslationManager(obj)
-        # don't do anything if there are no translations - renaming will be
-        # handled by Plone
-        if len(manager.get_translated_languages()) > 1:
+        manager = ITranslationManager(obj, None)
+        # don't do anything if there are no translations yet - renaming
+        # will be handled by Plone
+        if manager and len(manager.get_translated_languages()) > 1:
             old_id = obj.id
             # If the obj does not provide INameFromTitle, use the ID normalizer
             # to create an id
@@ -72,9 +75,11 @@ def renameOnEdit(obj, event):
             new_id = chooser.chooseName(name, obj)
 
             if new_id != old_id:
-                if getattr(aq_base(obj), 'setId', None):
-                    obj.setId(new_id)
-                    notify(ObjectMovedEvent(
-                        obj, parent, old_id, parent, new_id))
-                else:
-                    parent.manage_renameObject(old_id, new_id)
+                lockable = ILockable(obj)
+                if lockable.locked():
+                    if lockable.can_safely_unlock():
+                        lockable.unlock()
+                    else:
+                        # cant' do anything
+                        return
+                parent.manage_renameObject(old_id, new_id)
