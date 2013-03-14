@@ -75,8 +75,8 @@ def renameOnEdit(obj, event):
             new_id = chooser.chooseName(name, obj)
 
             if new_id != old_id:
-                lockable = ILockable(obj)
-                if lockable.locked():
+                lockable = ILockable(obj, None)
+                if lockable and lockable.locked():
                     if lockable.can_safely_unlock():
                         lockable.unlock()
                     else:
