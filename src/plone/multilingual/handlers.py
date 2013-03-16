@@ -1,11 +1,13 @@
 from plone.app.content.interfaces import INameFromTitle
 from plone.app.layout.navigation.interfaces import INavigationRoot
+from plone.app.multilingual.interfaces import IMultiLanguageExtraOptionsSchema
 from plone.i18n.normalizer.interfaces import IUserPreferredURLNormalizer
 from plone.locking.interfaces import ILockable
 from plone.multilingual.interfaces import ITranslationManager, ILanguage
+from plone.registry.interfaces import IRegistry
 
 from zope.component import adapter
-from zope.component import queryUtility
+from zope.component import queryUtility, getUtility
 from zope.container.interfaces import INameChooser
 
 from zope.lifecycleevent.interfaces import IObjectCreatedEvent
@@ -47,6 +49,11 @@ def addAttributeTG(obj, event):
 
 @adapter(ITranslatable, IObjectModifiedEvent)
 def renameOnEdit(obj, event):
+    registry = getUtility(IRegistry)
+    settings = registry.forInterface(IMultiLanguageExtraOptionsSchema,
+                                        check=False)
+    if not settings.rename_translation_from_title:
+        return
     # Don't rename navigation roots
     if INavigationRoot.providedBy(obj):
         return
