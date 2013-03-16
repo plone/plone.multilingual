@@ -42,9 +42,13 @@ def addAttributeTG(obj, event):
 
     setattr(obj, ATTRIBUTE_NAME, tg)
 
-    # also mark the item as new translation, unless it is language-neutral
-    if ILanguage(obj).get_language() != '':
-        setattr(obj, NEW_TRANSLATION, True)
+    registry = getUtility(IRegistry)
+    settings = registry.forInterface(IMultiLanguageExtraOptionsSchema,
+                                        check=False)
+    if settings.rename_translation_from_title:
+        # also mark the item as new translation, unless it is language-neutral
+        if ILanguage(obj).get_language() != '':
+            setattr(obj, NEW_TRANSLATION, True)
 
 
 @adapter(ITranslatable, IObjectModifiedEvent)
