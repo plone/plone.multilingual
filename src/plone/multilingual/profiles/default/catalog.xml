@@ -1,11 +1,7 @@
 <?xml version="1.0"?>
 <object name="portal_catalog" meta_type="Plone Catalog Tool">
- <index name="TranslationGroup" meta_type="FieldIndex">
-  <indexed_attr value="TranslationGroup"/>
- </index>
- <index name="Language" meta_type="FieldIndex">
-  <indexed_attr value="Language"/>
- </index>
+ <!-- Do not EVER add indexes via xml. Every reinstall will cause an existing
+     index to get nuked. -->
  <column value="Language"/>
  <column value="TranslationGroup"/>
 </object>
