@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!-- For testing, we add the necessary catalog indexes via Generic Setup.
+     For regular installation in a Plone site, the idexes are added via a
+     setuphandlers step in plone.app.multilingual -->
+<object name="portal_catalog" meta_type="Plone Catalog Tool">
+ <index name="TranslationGroup" meta_type="FieldIndex">
+  <indexed_attr value="TranslationGroup"/>
+ </index>
+ <index name="Language" meta_type="FieldIndex">
+  <indexed_attr value="Language"/>
+ </index>
+ <column value="Language"/>
+ <column value="TranslationGroup"/>
+</object>
+

@@ -36,14 +36,14 @@ class PloneMultilingualLayer(PloneSandboxLayer):
         import plone.multilingual
 
         # load ZCML
-        xmlconfig.file('configure.zcml', plone.multilingual,
+        xmlconfig.file('testing.zcml', plone.multilingual,
                         context=configurationContext)
         xmlconfig.file('configure.zcml', plone.multilingual.tests,
                         context=configurationContext)
 
     def setUpPloneSite(self, portal):
         # install into the Plone site
-        applyProfile(portal, 'plone.multilingual:default')
+        applyProfile(portal, 'plone.multilingual:testing')
         from zope.interface import classImplements
         from Products.ATContentTypes.content.folder import ATFolder
         classImplements(ATFolder, ITranslatable)
