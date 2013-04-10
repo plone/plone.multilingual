@@ -25,7 +25,7 @@ class DemoLanguage(object):
         self.context = context
 
     def get_language(self):
-        return self.context.getLanguage()
+        return self.context.Language()
 
     def set_language(self, lang):
         self.context.setLanguage(lang)
