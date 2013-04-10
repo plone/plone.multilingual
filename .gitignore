@@ -6,7 +6,7 @@
 # folders
 build
 dist
-src
+extras
 parts
 develop-eggs
 var
