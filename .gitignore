@@ -2,5 +2,22 @@
 *.egg
 *.egg-info
 *.DS_STORE
+
+# folders
 build
 dist
+src
+parts
+develop-eggs
+var
+bin
+
+# eclipse
+.settings
+.pydevproject
+.project
+
+# buildout
+.installed.cfg
+.mr.developer.cfg
+local.cfg
