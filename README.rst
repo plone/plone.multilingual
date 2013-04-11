@@ -1,3 +1,6 @@
+.. image:: https://travis-ci.org/saily/plone.multilingual.png
+    :target: http://travis-ci.org/saily/plone.multilingual
+
 plone.multilingual
 ==================
 
