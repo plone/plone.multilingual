@@ -4,6 +4,10 @@ Changelog
 1.0 Unreleased
 --------------
 
+- Merge ``README.rst`` and ``src/plone/multilingual/README.rst`` into
+  one single file.
+  [saily]
+
 - Fix all integration- and doctests
   [saily]
 
