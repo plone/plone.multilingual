@@ -137,15 +137,22 @@ Messing up with content
 -----------------------
 In case that we do mess up things with content (users always do)::
 
+    >>> from zope.lifecycleevent import modified
     >>> portal.invokeFactory('Folder', 'ob2', title=u"An archetypes based doc")
     'ob2'
     >>> ILanguage(portal['ob2']).set_language('it')
+    >>> modified(portal['ob2'])
+    >>> ILanguage(portal['ob2']).get_language()
+    'it'
     >>> ITranslationManager(portal['ob2']).add_translation('en')
     >>> ob2_en = ITranslationManager(portal['ob2']).get_translation('en')
 
     >>> portal.invokeFactory('Folder', 'ob3', title=u"An archetypes based doc")
     'ob3'
     >>> ILanguage(portal['ob3']).set_language('it')
+    >>> modified(portal['ob3'])
+    >>> ILanguage(portal['ob3']).get_language()
+    'it'
     >>> ITranslationManager(portal['ob3']).add_translation('es')
     >>> ob3_es = ITranslationManager(portal['ob3']).get_translation('es')
 
@@ -178,6 +185,9 @@ Other use case, A('it' + 'en') and B('it' + 'es'), and we want A('en') -> B('es'
     >>> portal.invokeFactory('Folder', 'mess1', title=u"An archetypes based doc")
     'mess1'
     >>> ILanguage(portal['mess1']).set_language('it')
+    >>> modified(portal['mess1'])
+    >>> ILanguage(portal['mess1']).get_language()
+    'it'
     >>> ITranslationManager(portal['mess1']).add_translation('en')
     >>> mess1_en = ITranslationManager(portal['mess1']).get_translation('en')
 
