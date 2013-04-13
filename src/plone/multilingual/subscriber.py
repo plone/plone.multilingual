@@ -30,9 +30,17 @@ def set_recursive_language(obj, language):
             if ITranslatable.providedBy(item):
                 set_recursive_language(item, language)
 
+def createdEvent(obj, event):
+    portal = getSite()
+    sdm = portal.session_data_manager
+    session = sdm.getSessionData()
+    if 'tg' in session.keys():
+        IMutableTG(obj).set(session['tg'])
+        modified(obj)
+        del session['tg']
 
 # Subscriber to set language on the child folder
-def createdEvent(obj, event):
+def addedEvent(obj, event):
     portal = getSite()
     if isinstance(event, ObjectCopiedEvent):
         parent = aq_parent(event.object)
@@ -56,7 +64,7 @@ def createdEvent(obj, event):
         # We set the tg, linking
         sdm = obj.session_data_manager
         session = sdm.getSessionData()
-        if 'tg' in session.keys() and session['tg'] in not None:
+        if 'tg' in session.keys():
             IMutableTG(obj).set(session['tg'])
             modified(obj)
             del session['tg']

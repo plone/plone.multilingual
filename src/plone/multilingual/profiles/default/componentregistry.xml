@@ -8,15 +8,19 @@
     <subscriber
       for="plone.multilingual.interfaces.ITranslatable
          zope.app.container.interfaces.IObjectAddedEvent"
+      handler="plone.multilingual.subscriber.addedEvent"/>
+    <subscriber
+      for="plone.multilingual.interfaces.ITranslatable
+           zope.lifecycleevent.ObjectCreatedEvent"
       handler="plone.multilingual.subscriber.createdEvent"/>
     <subscriber
       for="plone.multilingual.interfaces.ITranslatable
          zope.lifecycleevent.interfaces.IObjectCopiedEvent"
-      handler="plone.multilingual.subscriber.createdEvent"/>
+      handler="plone.multilingual.subscriber.addedEvent"/>
     <subscriber
       for="plone.multilingual.interfaces.ITranslatable
          zope.lifecycleevent.interfaces.IObjectMovedEvent"
-      handler="plone.multilingual.subscriber.createdEvent"/>
+      handler="plone.multilingual.subscriber.addedEvent"/>
   </subscribers>
   <adapters>
     <adapter
