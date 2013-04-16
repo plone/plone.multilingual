@@ -26,7 +26,7 @@ def set_recursive_language(obj, language):
     """ Set the language at this object and recursive
     """
     ILanguage(obj).set_language(language)
-    #modified(obj)  # XXX: this will create recursion, disabled
+    modified(obj)  # XXX: this will create recursion, disabled
     if IFolderish.providedBy(obj):
         for item in obj.items():
             if ITranslatable.providedBy(item):
