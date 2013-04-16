@@ -5,6 +5,7 @@ from plone.multilingual.interfaces import (
     ILanguage,
     ITranslationManager,
     ITranslationFactory,
+    ITranslationLocator,
     ITG,
     IMutableTG,
     NOTG
@@ -123,9 +124,23 @@ class TranslationManager(object):
         # register the new translation
         self.register_translation(language, translated_object)
         # event
-        notify(ObjectTranslatedEvent(self.context, \
-            translated_object, language))
+        notify(ObjectTranslatedEvent(self.context,
+               translated_object, language))
         return
+
+    def add_translation_delegated(self, language):
+        """
+        Creation is delegated to factory/++add++
+        Lets return the url where we are going to create the translation
+        """
+        if not language and language != '':
+            raise KeyError('There is no target language')
+        # event
+        notify(ObjectWillBeTranslatedEvent(self.context, language))
+        # localize where we need to store the new object
+        locator = ITranslationLocator(self.context)
+        parent = locator(language)
+        return parent
 
     def remove_translation(self, language):
         """ see interfaces """

@@ -29,7 +29,10 @@ setup(name='plone.multilingual',
           'plone.app.uuid'
       ],
       extras_require={
-          'test': ['plone.app.testing', ],
+          'test': [
+              'plone.app.testing',
+              'zope.intid'
+          ],
       },
       entry_points="""
       # -*- Entry points: -*-
