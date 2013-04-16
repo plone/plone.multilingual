@@ -1,19 +1,17 @@
+.. image:: https://travis-ci.org/saily/plone.multilingual.png
+    :target: http://travis-ci.org/saily/plone.multilingual
+
 plone.multilingual
 ==================
 
-This package contains the core functionality for the next generation
-multilingual engine for Plone.
-
-For more information about plone.app.multilingual, please visit::
-
-    https://github.com/plone/plone.app.multilingual
+This package contains the core functionality for the next generation multilingual engine.
 
 These are the main artifacts and its purposes:
 
     canonical:
         * the canonical organizes the information about a "translation-group"
         * it's using a dictionary with language-codes as keys and uuids
-          (provided by plone.uuid) as values
+        (provided by plone.uuid) as values
 
     storage:
         * persistent storage, which holds the canonicals in an IOBTree
@@ -35,6 +33,7 @@ called DemoLanguage that will allow to get the language of the object::
     >>> from plone.multilingual.interfaces import ITranslationManager
     >>> from plone.multilingual.interfaces import ILanguage
     >>> from plone.app.testing import setRoles, login, TEST_USER_ID, TEST_USER_NAME
+    >>> from zope.lifecycleevent import modified
 
     >>> portal = layer['portal']
     >>> setRoles(portal, TEST_USER_ID, ['Manager'])
@@ -43,6 +42,8 @@ called DemoLanguage that will allow to get the language of the object::
     'ob1'
 
     >>> ILanguage(portal['ob1']).set_language('ca')
+    >>> portal['ob1'].reindexObject()
+    >>> modified(portal['ob1'])
 
 Ensuring that the new object gets its UUID::
 
@@ -97,7 +98,7 @@ has_translation::
 register_translation with invalid language::
 
     >>> ITranslationManager(portal['ob1']).remove_translation('en')
-    >>> ITranslationManager(portal['ob1']).register_translation('', portal['ob1-en'])
+    >>> ITranslationManager(portal['ob1']).register_translation(None, portal['ob1-en'])
     Traceback (most recent call last):
     ...
     KeyError: 'There is no target language'
@@ -117,12 +118,92 @@ changing the content-language (there should act a subscriber)::
     >>> ITranslationManager(portal['ob1']).get_translations()
     {'ca': <ATFolder at /plone/ob1>, 'it': <ATFolder at /plone/ob1-en>}
 
-test the delete-subscriber::
+test more translations::
+
+    >>> obj_it = ITranslationManager(portal['ob1']).get_translation('it')
+    >>> ITranslationManager(obj_it).add_translation('fr')
+    >>> ITranslationManager(obj_it).add_translation('pt')
+    >>> ITranslationManager(portal['ob1']).get_translated_languages()
+    ['ca', 'it', 'fr', 'pt']
+    >>> ITranslationManager(obj_it).get_translated_languages()
+    ['ca', 'it', 'fr', 'pt']
+
+test if canonicals objects are the same::
+
+    >>> obj_ca = ITranslationManager(obj_it).get_translation('ca')
+    >>> canonical_it = ITranslationManager(obj_it).query_canonical()
+    >>> canonical_ca = ITranslationManager(obj_ca).query_canonical()
+    >>> canonical_it == canonical_ca
+    True
+
+Messing up with content
+-----------------------
+In case that we do mess up things with content (users always do)::
+
+    >>> from zope.lifecycleevent import modified
+    >>> portal.invokeFactory('Folder', 'ob2', title=u"An archetypes based doc")
+    'ob2'
+    >>> ILanguage(portal['ob2']).set_language('it')
+    >>> modified(portal['ob2'])
+    >>> ILanguage(portal['ob2']).get_language()
+    'it'
+    >>> ITranslationManager(portal['ob2']).add_translation('en')
+    >>> ob2_en = ITranslationManager(portal['ob2']).get_translation('en')
+
+    >>> portal.invokeFactory('Folder', 'ob3', title=u"An archetypes based doc")
+    'ob3'
+    >>> ILanguage(portal['ob3']).set_language('it')
+    >>> modified(portal['ob3'])
+    >>> ILanguage(portal['ob3']).get_language()
+    'it'
+    >>> ITranslationManager(portal['ob3']).add_translation('es')
+    >>> ob3_es = ITranslationManager(portal['ob3']).get_translation('es')
 
     >>> from OFS.event import ObjectWillBeRemovedEvent
-    >>> notify(ObjectWillBeRemovedEvent(ITranslationManager(portal['ob1']).get_translation('it')))
-    >>> ITranslationManager(portal['ob1']).get_translations()
-    {'ca': <ATFolder at /plone/ob1>}
+    >>> notify(ObjectWillBeRemovedEvent(portal['ob2']))
+    >>> portal.manage_delObjects('ob2')
+
+    >>> notify(ObjectWillBeRemovedEvent(ob3_es))
+    >>> portal.manage_delObjects(ob3_es.id)
+
+    >>> c_old = ITranslationManager(portal['ob3']).query_canonical()
+    >>> c_new = ITranslationManager(ob2_en).query_canonical()
+    >>> c_old == c_new
+    False
+
+    >>> isinstance(c_old, str)
+    True
+    >>> isinstance(c_new, str)
+    True
+
+    >>> ITranslationManager(ob2_en).register_translation('it', portal['ob3'])
+
+    >>> c1 = ITranslationManager(portal['ob3']).query_canonical()
+    >>> c2 = ITranslationManager(ob2_en).query_canonical()
+    >>> c1 == c2
+    True
+
+Other use case, A('it' + 'en') and B('it' + 'es'), and we want A('en') -> B('es')::
+
+    >>> portal.invokeFactory('Folder', 'mess1', title=u"An archetypes based doc")
+    'mess1'
+    >>> ILanguage(portal['mess1']).set_language('it')
+    >>> modified(portal['mess1'])
+    >>> ILanguage(portal['mess1']).get_language()
+    'it'
+    >>> ITranslationManager(portal['mess1']).add_translation('en')
+    >>> mess1_en = ITranslationManager(portal['mess1']).get_translation('en')
+
+    >>> portal.invokeFactory('Folder', 'mess2', title=u"An archetypes based doc")
+    'mess2'
+    >>> ILanguage(portal['mess2']).set_language('it')
+    >>> ITranslationManager(portal['mess2']).add_translation('es')
+    >>> mess2_es = ITranslationManager(portal['mess2']).get_translation('es')
+
+    >>> ITranslationManager(mess1_en).register_translation('es', mess2_es)
+    >>> ITranslationManager(portal['mess2']).get_translation('es')
+    >>> ITranslationManager(portal['mess1']).get_translation('es')
+    <ATFolder at /plone/mess2-es>
 
 Default-Adapters
 ----------------

@@ -1,12 +1,13 @@
-import unittest2 as unittest
+# -*- coding: utf-8 -*-
+from Products.CMFCore.utils import getToolByName
 
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import setRoles
-
-from ..interfaces import ILanguage
-from ..testing import PLONEMULTILINGUAL_INTEGRATION_TESTING
+from plone.multilingual.interfaces import ILanguage
+from plone.multilingual.testing import PLONEMULTILINGUAL_INTEGRATION_TESTING
 
 import transaction
+import unittest2 as unittest
 
 
 class TestSubscribers(unittest.TestCase):
@@ -34,10 +35,19 @@ class TestSubscribers(unittest.TestCase):
 
     def test_created_event(self):
         """when an object is created in a folder
-        it takes its language from the folder itself
+           it takes its language from the folder itself
         """
         folder_1 = self._add_content(self.folder_it, 'Folder', 'folder_1')
         self.assertEqual(ILanguage(folder_1).get_language(), 'it')
+
+    def test_created_event_on_portal(self):
+        """when an object is created on portal it should get the default
+           language because 'language independent' is not allowed.
+        """
+        language_tool = getToolByName(self.portal, 'portal_languages')
+        folder_1 = self._add_content(self.portal, 'Folder', 'folder_1')
+        self.assertEqual(ILanguage(folder_1).get_language(),
+                         language_tool.getPreferredLanguage())
 
     def test_moved_event(self):
         folder = self._add_content(self.folder_it, 'Folder', 'folder_1')
