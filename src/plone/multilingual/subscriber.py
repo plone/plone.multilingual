@@ -34,7 +34,7 @@ def set_recursive_language(obj, language):
 
 
 # Subscriber to set language on the child folder
-def createdEvent(obj, event):
+def addedEvent(obj, event):
     portal = getSite()
     language_tool = getToolByName(portal, 'portal_languages')
 
@@ -60,13 +60,13 @@ def createdEvent(obj, event):
     elif ITranslatable.providedBy(parent):
         # Normal use case
         # We set the tg, linking
+        language = ILanguage(parent).get_language()
+        set_recursive_language(obj, language)
         sdm = obj.session_data_manager
         session = sdm.getSessionData()
-        if 'tg' in session.keys() and session['tg'] is not None:
+
+        if 'tg' in session.keys() and \
+           not portal.portal_factory.isTemporary(obj):
             IMutableTG(obj).set(session['tg'])
             modified(obj)
             del session['tg']
-
-        # We change its soons language
-        language = ILanguage(parent).get_language()
-        set_recursive_language(obj, language)
