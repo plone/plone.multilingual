@@ -32,7 +32,7 @@ def set_recursive_language(obj, language):
 
 
 # Subscriber to set language on the child folder
-def addedEvent(obj, event):
+def createdEvent(obj, event):
     portal = getSite()
     if isinstance(event, ObjectCopiedEvent):
         parent = aq_parent(event.object)
