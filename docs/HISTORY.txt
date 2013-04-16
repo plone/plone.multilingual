@@ -4,6 +4,33 @@ Changelog
 1.0 Unreleased
 --------------
 
+- Merge ``README.rst`` and ``src/plone/multilingual/README.rst`` into
+  one single file.
+  [saily]
+
+- Fix all integration- and doctests
+  [saily]
+
+- Fix wrong accessor in DemoLanguage adapter.
+  [saily]
+
+- Support Sessions in tests.
+  [saily]
+
+- Update createdEvent to use aq_parent of created, copied or moved object
+  instead of ``event.newParent`` which is not available on
+  ``ObjectCreatedEvent``.
+  [saily]
+
+- Some pep8 cleanup and alignment to plone coding conventions.
+  [saily]
+
+- Add buildouts for Plone 4.0, 4.1, 4.2 and 4.3
+  [saily]
+
+- Add travis integration
+  [saily]
+
 
 1.0rc1 2013-01-26
 -----------------

@@ -8,7 +8,7 @@ from plone.multilingual.testing import (
 )
 
 integration_tests = [
-    'README.rst',
+    '../../../README.rst',
 ]
 functional_tests = [
 ]
@@ -25,7 +25,7 @@ def test_suite():
                                       optionflags=optionflags),
                  layer=PLONEMULTILINGUAL_FUNCTIONAL_TESTING)
             for f in functional_tests]
-        )
+    )
 
 if __name__ == '__main__':
     unittest.main(defaultTest='test_suite')
