@@ -80,9 +80,19 @@ class ITranslationManager(Interface):
         get translation (translated object) if exists
         """
 
+    def get_restricted_translation(language):
+        """
+        get translation (translated object) if exists and permitted
+        """
+
     def get_translations():
         """
         get all the translated objects (including the context)
+        """
+
+    def get_restricted_translations():
+        """
+        get all the translated objects (including the context) if permitted
         """
 
     def get_translated_languages():

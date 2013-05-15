@@ -1,6 +1,13 @@
 Changelog
 =========
 
+1.1 unreleased
+--------------
+
+- completed interfaces for TranslationManager and add method  
+  ``get_restricted_translations``
+  [jensens]
+
 1.0 2013-04-16
 --------------
 
