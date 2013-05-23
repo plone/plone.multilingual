@@ -185,7 +185,8 @@ class TranslationManager(object):
         languages = []
         brains = self.pcatalog.unrestrictedSearchResults(TranslationGroup=self.tg)
         for brain in brains:
-            languages.append(brain.Language)
+            if not brain.Language in languages:
+                languages.append(brain.Language)
         return languages
 
     def has_translation(self, language):

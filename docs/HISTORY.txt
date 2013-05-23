@@ -8,6 +8,8 @@ Changelog
   ``get_restricted_translations``
   [jensens]
 
+- uniquify translated languages [kiorky]
+
 1.0 2013-04-16
 --------------
 
