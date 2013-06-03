@@ -155,6 +155,14 @@ class TranslationManager(object):
             return None
         return brains[0].getObject()
 
+    def get_restricted_translation(self, language):
+        """ see interfaces """
+        brains = self.pcatalog.searchResults(TranslationGroup=self.tg,
+                                             Language=language)
+        if len(brains) != 1:
+            return None
+        return brains[0].getObject()
+
     def get_translations(self):
         """ see interfaces """
         translations = {}
@@ -177,7 +185,8 @@ class TranslationManager(object):
         languages = []
         brains = self.pcatalog.unrestrictedSearchResults(TranslationGroup=self.tg)
         for brain in brains:
-            languages.append(brain.Language)
+            if not brain.Language in languages:
+                languages.append(brain.Language)
         return languages
 
     def has_translation(self, language):
