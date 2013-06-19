@@ -10,6 +10,7 @@ from plone.multilingual.interfaces import (
 from zope import interface
 from Acquisition import aq_parent
 from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
+from Products.CMFPlone.utils import _createObjectByType
 
 
 class DefaultLanguageIndependentFieldsManager(object):
@@ -98,6 +99,32 @@ class DefaultTranslationFactory(object):
         new_id = parent.invokeFactory(type_name=content_type, \
             id=content_id, language=language)
         new_content = getattr(parent, new_id)
+        # clone language-independent content
+        cloner = ITranslationCloner(self.context)
+        cloner(new_content)
+        return new_content
+
+
+class UnrestrictedTranslationFactory(object):
+    interface.implements(ITranslationFactory)
+
+    def __init__(self, context):
+        self.context = context
+
+    def __call__(self, language):
+        content_type = self.context.portal_type
+        # parent for translation
+        locator = ITranslationLocator(self.context)
+        parent = locator(language)
+        # id for translation
+        name_chooser = ITranslationIdChooser(self.context)
+        content_id = name_chooser(parent, language)
+        # creating the translation
+        new_content = _createObjectByType(content_type,
+            parent,
+            id=content_id,
+            language=language
+            )
         # clone language-independent content
         cloner = ITranslationCloner(self.context)
         cloner(new_content)
