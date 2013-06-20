@@ -10,6 +10,7 @@ from plone.multilingual.interfaces import (
 from zope import interface
 from Acquisition import aq_parent
 from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
+from zope.component.hooks import getSite
 
 
 class DefaultLanguageIndependentFieldsManager(object):
@@ -41,12 +42,16 @@ class DefaultTranslationLocator(object):
         parent = aq_parent(self.context)
         translated_parent = parent
         found = False
-        while not IPloneSiteRoot.providedBy(parent) and not found:
+        portal = getSite()
+        while not parent == portal and not found:
             parent_translation = ITranslationManager(parent)
             if parent_translation.has_translation(language):
                 translated_parent = parent_translation.get_translation(language)
                 found = True
             parent = aq_parent(parent)
+        if translated_parent == portal and hasattr(portal, language):
+            translated_parent = portal[language]
+
         return translated_parent
 
 

@@ -35,29 +35,12 @@ def set_recursive_language(obj, language):
 
 # Subscriber to set language on the child folder
 def createdEvent(obj, event):
-    portal = getSite()
-    language_tool = getToolByName(portal, 'portal_languages')
 
     # On ObjectCopiedEvent and ObjectMovedEvent aq_parent(event.object) is
     # always equal to event.newParent.
     parent = aq_parent(event.object)
 
-    if (language_tool.startNeutral() and ITranslatable.providedBy(obj)):
-
-        # We leave this untouched by now.
-        # We don't set languages
-        set_recursive_language(obj, LANGUAGE_INDEPENDENT)
-
-    elif (IPloneSiteRoot.providedBy(parent) and
-          ITranslatable.providedBy(obj) and
-          ILanguage(obj).get_language() == LANGUAGE_INDEPENDENT):
-
-        # It's a root folder and we set the default language
-        # ( not independent allowed )
-        language = language_tool.getPreferredLanguage()
-        set_recursive_language(obj, language)
-
-    elif ITranslatable.providedBy(parent):
+    if ITranslatable.providedBy(parent):
         # Normal use case
         # We set the tg, linking
         language = ILanguage(parent).get_language()
@@ -70,3 +53,5 @@ def createdEvent(obj, event):
             IMutableTG(obj).set(session['tg'])
             modified(obj)
             del session['tg']
+    else:
+        set_recursive_language(obj, LANGUAGE_INDEPENDENT)

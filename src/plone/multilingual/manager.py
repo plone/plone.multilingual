@@ -8,7 +8,8 @@ from plone.multilingual.interfaces import (
     ITranslationLocator,
     ITG,
     IMutableTG,
-    NOTG
+    NOTG,
+    LANGUAGE_INDEPENDENT
 )
 from plone.multilingual.handlers import addAttributeTG
 from plone.multilingual.events import (
@@ -92,6 +93,9 @@ class TranslationManager(object):
     def update(self):
         """ see interfaces"""
         language = ILanguage(self.context).get_language()
+        if language == LANGUAGE_INDEPENDENT:
+            # In case its language independent we don't need to do anything
+            return
         self.context.reindexObject()
         # In case language is already on the translated languages we are going to orphan the old translation
         brains = self.pcatalog.unrestrictedSearchResults(TranslationGroup=self.tg, Language=language)
