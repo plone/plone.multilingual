@@ -1,10 +1,13 @@
 Changelog
 =========
 
-1.1 unreleased
---------------
+1.1 - Unreleased
+----------------
 
-- completed interfaces for TranslationManager and add method  
+- Don't fire ``ObjectModifiedEvent`` just reindex required indexes in catalog.
+  [saily]
+
+- completed interfaces for TranslationManager and add method
   ``get_restricted_translations``
   [jensens]
 
