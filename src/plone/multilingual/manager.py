@@ -94,7 +94,6 @@ class TranslationManager(object):
         """ see interfaces"""
         language = ILanguage(self.context).get_language()
         if language == LANGUAGE_INDEPENDENT:
-            # In case its language independent we don't need to do anything
             return
         self.context.reindexObject()
         # In case language is already on the translated languages we are going to orphan the old translation
@@ -172,7 +171,8 @@ class TranslationManager(object):
         translations = {}
         brains = self.pcatalog.unrestrictedSearchResults(TranslationGroup=self.tg)
         for brain in brains:
-            translations[brain.Language] = brain.getObject()
+            if brain.Language != LANGUAGE_INDEPENDENT:
+                translations[brain.Language] = brain.getObject()
         return translations
 
     def get_restricted_translations(self):
