@@ -47,6 +47,7 @@ def createdEvent(obj, event):
         set_recursive_language(obj, language)
         sdm = obj.session_data_manager
         session = sdm.getSessionData()
+        portal = getSite()
 
         if 'tg' in session.keys() and \
            not portal.portal_factory.isTemporary(obj):
