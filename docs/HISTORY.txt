@@ -4,7 +4,12 @@ Changelog
 1.1 unreleased
 --------------
 
-- completed interfaces for TranslationManager and add method  
+- change set_recursive_language in order to update each object
+  by ITranslationManager instead of notify a IObjectModified event.
+  This prevent a sort of recursion between different events
+  [gborelli]
+
+- completed interfaces for TranslationManager and add method
   ``get_restricted_translations``
   [jensens]
 
