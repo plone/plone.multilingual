@@ -160,6 +160,7 @@ class TranslationManager(object):
 
     def get_restricted_translation(self, language):
         """ see interfaces """
+        import pdb; pdb.set_trace()
         brains = self.pcatalog.searchResults(TranslationGroup=self.tg,
                                              Language=language)
         if len(brains) != 1:
@@ -182,6 +183,15 @@ class TranslationManager(object):
             Language='all')
         for brain in brains:
             translations[brain.Language] = brain.getObject()
+        return translations
+
+    def get_restricted_translations_url(self):
+        """ see interfaces """
+        translations = {}
+        brains = self.pcatalog.searchResults(TranslationGroup=self.tg,
+            Language='all')
+        for brain in brains:
+            translations[brain.Language] = brain.getURL()
         return translations
 
     def get_translated_languages(self):

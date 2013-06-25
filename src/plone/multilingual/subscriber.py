@@ -11,6 +11,10 @@ from plone.multilingual.interfaces import ITranslationManager
 from plone.multilingual.interfaces import ITranslatable
 from zope.component.hooks import getSite
 from zope.lifecycleevent import modified
+from zope.lifecycleevent.interfaces import IObjectRemovedEvent
+
+# XXX : Hack to avoig updating the language root folder
+from plone.app.multilingual.interfaces import ILanguageRootFolder
 
 
 def remove_translation_on_delete(obj, event):
@@ -19,7 +23,9 @@ def remove_translation_on_delete(obj, event):
 
 # In case is a normal content update translation manager with the new language
 def update_on_modify(obj, event):
-    ITranslationManager(obj).update()
+    # XXX : Hack to avoid updating the language root folder
+    if not ILanguageRootFolder.providedBy(obj):
+        ITranslationManager(obj).update()
 
 
 def set_recursive_language(obj, language):
@@ -35,6 +41,10 @@ def set_recursive_language(obj, language):
 
 # Subscriber to set language on the child folder
 def createdEvent(obj, event):
+
+    if IObjectRemovedEvent.providedBy(event):
+        # We don't need to do anything here if it comes from deletion
+        return
 
     # On ObjectCopiedEvent and ObjectMovedEvent aq_parent(event.object) is
     # always equal to event.newParent.
