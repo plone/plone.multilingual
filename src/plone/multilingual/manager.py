@@ -160,7 +160,6 @@ class TranslationManager(object):
 
     def get_restricted_translation(self, language):
         """ see interfaces """
-        import pdb; pdb.set_trace()
         brains = self.pcatalog.searchResults(TranslationGroup=self.tg,
                                              Language=language)
         if len(brains) != 1:
