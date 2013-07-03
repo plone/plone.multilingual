@@ -11,6 +11,7 @@ from plone.multilingual.interfaces import ITranslationManager
 from plone.multilingual.interfaces import ITranslatable
 from zope.component.hooks import getSite
 from zope.lifecycleevent import modified
+from zope.lifecycleevent.interfaces import IObjectRemovedEvent
 
 
 def remove_translation_on_delete(obj, event):
@@ -39,6 +40,15 @@ def set_recursive_language(obj, language):
 
 # Subscriber to set language on the child folder
 def createdEvent(obj, event):
+    """ It can be a 
+        IObjectRemovedEvent - don't do anything
+        IObjectMovedEvent
+        IObjectAddedEvent
+        IObjectCopiedEvent
+    """
+    if IObjectRemovedEvent.providedBy(event):
+        return
+
     portal = getSite()
     language_tool = getToolByName(portal, 'portal_languages')
 

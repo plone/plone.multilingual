@@ -1,7 +1,14 @@
 Changelog
 =========
 
-1.1 unreleased
+1.1.1 2013-07-03
+----------------
+
+- on IObjectRemovedEvent the subscriber ran and reindexed the object
+  to be removed. Bug solved
+  [ramon]
+
+1.1 2013-06-19
 --------------
 
 - change set_recursive_language in order to update each object
