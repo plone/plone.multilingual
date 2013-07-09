@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.2 Unrealeased
+---------------
+
+- Don't fire ``ObjectModifiedEvent`` just reindex required indexes in catalog.
+  [saily]
+
 1.1.1 2013-07-03
 ----------------
 

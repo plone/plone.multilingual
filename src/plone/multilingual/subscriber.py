@@ -23,15 +23,15 @@ def update_on_modify(obj, event):
     ITranslationManager(obj).update()
 
 
+def reindex_object(obj):
+    obj.reindexObject(idxs=("Language", "TranslationGroup", ))
+
+
 def set_recursive_language(obj, language):
     """ Set the language at this object and recursive
     """
     ILanguage(obj).set_language(language)
-    # XXX: this will create recursion, disabled
-    # modified(obj)
-
-    # update translations for each object
-    update_on_modify(obj, None)
+    reindex_object(obj)
     if IFolderish.providedBy(obj):
         for item in obj.items():
             if ITranslatable.providedBy(item):
@@ -82,5 +82,5 @@ def createdEvent(obj, event):
         if 'tg' in session.keys() and \
            not portal.portal_factory.isTemporary(obj):
             IMutableTG(obj).set(session['tg'])
-            modified(obj)
+            reindex_object(obj)
             del session['tg']
