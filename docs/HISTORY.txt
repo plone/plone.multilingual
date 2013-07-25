@@ -7,7 +7,7 @@ Changelog
 - Don't fire ``ObjectModifiedEvent`` just reindex required indexes in catalog.
   [saily]
 
-- Don't trigger reindex if language has not changed..
+- Don't trigger reindex if language has not changed.
   [saily]
 
 1.1.1 2013-07-03
