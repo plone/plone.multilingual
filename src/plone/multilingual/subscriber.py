@@ -30,8 +30,10 @@ def reindex_object(obj):
 def set_recursive_language(obj, language):
     """ Set the language at this object and recursive
     """
-    ILanguage(obj).set_language(language)
-    reindex_object(obj)
+    if ILanguage(obj).get_language() != language:
+        ILanguage(obj).set_language(language)
+        reindex_object(obj)
+
     if IFolderish.providedBy(obj):
         for item in obj.items():
             if ITranslatable.providedBy(item):
@@ -40,7 +42,7 @@ def set_recursive_language(obj, language):
 
 # Subscriber to set language on the child folder
 def createdEvent(obj, event):
-    """ It can be a 
+    """ It can be a
         IObjectRemovedEvent - don't do anything
         IObjectMovedEvent
         IObjectAddedEvent
