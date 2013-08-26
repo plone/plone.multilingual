@@ -24,7 +24,8 @@ def update_on_modify(obj, event):
 
 
 def reindex_object(obj):
-    obj.reindexObject(idxs=("Language", "TranslationGroup", ))
+    obj.reindexObject(idxs=("Language", "TranslationGroup",
+                            "path", "allowedRolesAndUsers"), )
 
 
 def set_recursive_language(obj, language):
