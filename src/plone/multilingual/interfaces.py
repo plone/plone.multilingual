@@ -110,6 +110,7 @@ class ITranslationManager(Interface):
     def update():
         """
         update the item registered in the canonical
+        check that there aren't two translations on the same language
         (used for changing the contexts language)
         """
 

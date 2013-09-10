@@ -92,7 +92,7 @@ class TranslationManager(object):
     def update(self):
         """ see interfaces"""
         language = ILanguage(self.context).get_language()
-        self.context.reindexObject()
+        # self.context.reindexObject(idxs=("Language", "TranslationGroup", ))
         # In case language is already on the translated languages we are going to orphan the old translation
         brains = self.pcatalog.unrestrictedSearchResults(TranslationGroup=self.tg, Language=language)
         if len(brains) == 0:
@@ -107,7 +107,7 @@ class TranslationManager(object):
                 # We get the old uuid
                 old_object = brain.getObject()
                 IMutableTG(old_object).set(NOTG)
-                old_object.reindexObject()
+                old_object.reindexObject(idxs=("Language", "TranslationGroup", ))
 
     def add_translation(self, language):
         """ see interfaces """

@@ -15,13 +15,14 @@ from zope.lifecycleevent.interfaces import IObjectRemovedEvent
 
 
 def remove_translation_on_delete(obj, event):
+    """ Deprecated """
     pass
 
 
 # In case is a normal content update translation manager with the new language
 def update_on_modify(obj, event):
-    ITranslationManager(obj).update()
-
+    """ Deprecated """
+    pass
 
 def reindex_object(obj):
     obj.reindexObject(idxs=("Language", "TranslationGroup", ))
@@ -31,6 +32,7 @@ def set_recursive_language(obj, language):
     """ Set the language at this object and recursive
     """
     ILanguage(obj).set_language(language)
+    ITranslationManager(obj).update()
     reindex_object(obj)
     if IFolderish.providedBy(obj):
         for item in obj.items():
