@@ -4,6 +4,9 @@ Changelog
 1.2 Unrealeased
 ---------------
 
+- Deprecated ``ObjectModifiedEvent`` method
+  [ramon]
+
 - Don't fire ``ObjectModifiedEvent`` just reindex required indexes in catalog.
   [saily]
 
