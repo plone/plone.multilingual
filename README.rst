@@ -1,3 +1,5 @@
+NOT in development. This package is beeing merged on plone.app.multilingual
+
 .. image:: https://travis-ci.org/plone/plone.multilingual.png
     :target: http://travis-ci.org/plone/plone.multilingual
 
