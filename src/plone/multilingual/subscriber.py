@@ -12,6 +12,8 @@ from plone.multilingual.interfaces import ITranslatable
 from zope.component.hooks import getSite
 from zope.lifecycleevent import modified
 from zope.lifecycleevent.interfaces import IObjectRemovedEvent
+from plone.multilingual.interfaces import ITranslationCloner
+
 
 
 def remove_translation_on_delete(obj, event):
@@ -86,5 +88,11 @@ def createdEvent(obj, event):
         if 'tg' in session.keys() and \
            not portal.portal_factory.isTemporary(obj):
             IMutableTG(obj).set(session['tg'])
+            old_obj = ITranslationManager(obj).get_translation(session['old_lang'])
+
+            # Copy ILanguage Independent field on on-the-fly translation
+            cloner = ITranslationCloner(old_obj)
+            cloner(obj)
+
             reindex_object(obj)
             del session['tg']
