@@ -19,7 +19,6 @@ import transaction
 
 
 def upgrade(context):
-    import ipdb;ipdb.set_trace()
     # Unregister remaining adapter registration
     sm = getSite().getSiteManager()
     sm.unregisterAdapter(factory=DefaultTranslationFactory, required=(ITranslatable, ), provided=ITranslationFactory)
