@@ -29,4 +29,12 @@
         handler=".to03.upgrade"
         />
 
+    <genericsetup:upgradeStep
+        source="03"
+        destination="04"
+        title="Get rid of remaining adapters registration"
+        profile="plone.multilingual:default"
+        handler=".to04.upgrade"
+        />
+
 </configure>
