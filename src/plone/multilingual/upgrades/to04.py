@@ -13,6 +13,14 @@ from plone.multilingual.interfaces import ILanguageIndependentFieldsManager
 from archetypes.multilingual.interfaces import IArchetypesTranslatable
 from archetypes.multilingual.utils import LanguageIndependentFieldsManager
 from archetypes.multilingual.cloner import Cloner
+from plone.multilingualbehavior.interfaces import IDexterityTranslatable
+from plone.dexterity.interfaces import IEditFinishedEvent
+from plone.multilingualbehavior.cloner import Cloner as Cloner_bh
+from plone.multilingualbehavior.utils import LanguageIndependentFieldsManager as LanguageIndependentFieldsManager_bh
+from zope.lifecycleevent.interfaces import IObjectModifiedEvent
+from zope.lifecycleevent.interfaces import IObjectAddedEvent
+from zope.lifecycleevent.interfaces import IObjectCopiedEvent
+from zope.lifecycleevent.interfaces import IObjectMovedEvent
 
 from zope.component.hooks import getSite
 import transaction
@@ -28,5 +36,14 @@ def upgrade(context):
     sm.unregisterAdapter(factory=DefaultTranslationCloner, required=(ITranslatable, ), provided=ITranslationCloner)
     sm.unregisterAdapter(factory=Cloner, required=(IArchetypesTranslatable, ), provided=ITranslationCloner)
     sm.unregisterAdapter(factory=LanguageIndependentFieldsManager, required=(IArchetypesTranslatable, ), provided=ILanguageIndependentFieldsManager)
+    sm.unregisterHandler(required=(IDexterityTranslatable, IEditFinishedEvent))
+    sm.unregisterAdapter(factory=Cloner_bh, required=(IDexterityTranslatable, ), provided=ITranslationCloner)
+    sm.unregisterAdapter(factory=LanguageIndependentFieldsManager_bh, required=(IDexterityTranslatable, ), provided=ILanguageIndependentFieldsManager)
+    sm.unregisterHandler(required=(ITranslatable, IObjectModifiedEvent))
+    sm.unregisterHandler(required=(ITranslatable, IObjectAddedEvent))
+    sm.unregisterHandler(required=(ITranslatable, IObjectCopiedEvent))
+    sm.unregisterHandler(required=(ITranslatable, IObjectMovedEvent))
 
     transaction.commit()
+    app = getSite().restrictedTraverse('/')
+    app._p_jar.sync()
